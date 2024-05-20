@@ -1,4 +1,6 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
+﻿@using Microsoft.AspNetCore.Components.Authorization
+
+<div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="">ImaginaTuMundo.WEB</a>
         <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
@@ -16,59 +18,104 @@
         </div>
 
 
+        <AuthorizeView Roles="Admin">
+            <Authorized>
+
         <div class="nav-item px-3">
             <NavLink class="nav-link" href="madrescomunitarias" Match="NavLinkMatch.All">
                 <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Madre Comunitaria
             </NavLink>
         </div>
+            </Authorized>
+        </AuthorizeView>
 
 
+        
+        <AuthorizeView Roles="Admin">
+            <Authorized>
                 <div class="nav-item px-3">
                     <NavLink class="nav-link" href="asociacion" Match="NavLinkMatch.All">
                         <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Asociaciones
                     </NavLink>
                 </div>
+            </Authorized>
+        </AuthorizeView>
+
+        <AuthorizeView Roles="Admin">
+            <Authorized>
 
         <div class="nav-item px-3">
             <NavLink class="nav-link" href="representantelegal" Match="NavLinkMatch.All">
                 <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Representantes Legales
             </NavLink>
         </div>
+            </Authorized>
+        </AuthorizeView>
+        <AuthorizeView Roles="Admin">
+            <Authorized>
         <div class="nav-item px-3">
             <NavLink class="nav-link" href="ninos" Match="NavLinkMatch.All">
                 <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Niños
             </NavLink>
         </div>
+            </Authorized>
+        </AuthorizeView>
+
+         <AuthorizeView Roles="Admin">
+            <Authorized>
         <div class="nav-item px-3">
             <NavLink class="nav-link" href="icbf" Match="NavLinkMatch.All">
                 <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> ICBF
             </NavLink>
         </div>
+            </Authorized>
+        </AuthorizeView>
+
+        <AuthorizeView Roles="Admin">
+            <Authorized>
         <div class="nav-item px-3">
             <NavLink class="nav-link" href="tareasmadres" Match="NavLinkMatch.All">
                 <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Tareas para Madres
             </NavLink>
         </div>
+            </Authorized>
+        </AuthorizeView>
+        <AuthorizeView Roles="Admin">
+            <Authorized>
         <div class="nav-item px-3">
             <NavLink class="nav-link" href="evidencia" Match="NavLinkMatch.All">
                 <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Evidencias
             </NavLink>
         </div>
+            </Authorized>
+        </AuthorizeView>
+         <AuthorizeView Roles="Admin">
+            <Authorized>
         <div class="nav-item px-3">
             <NavLink class="nav-link" href="inscripcion" Match="NavLinkMatch.All">
                 <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Inscripción
             </NavLink>
         </div>
+            </Authorized>
+        </AuthorizeView>
+         <AuthorizeView Roles="Admin">
+            <Authorized>
         <div class="nav-item px-3">
             <NavLink class="nav-link" href="asignacionmadre" Match="NavLinkMatch.All">
                 <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Asignación a Madres
             </NavLink>
         </div>
+            </Authorized>
+        </AuthorizeView>
+        <AuthorizeView Roles="Admin">
+            <Authorized>
         <div class="nav-item px-3">
             <NavLink class="nav-link" href="seguimiento" Match="NavLinkMatch.All">
                 <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Seguimiento Niños
             </NavLink>
         </div>
+            </Authorized>
+        </AuthorizeView>
 
 
     </nav>

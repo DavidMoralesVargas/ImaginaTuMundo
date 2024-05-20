@@ -8,14 +8,13 @@ namespace ImaginaTuMundo.WEB.AuthenticationProviders
     {
         public override async Task<AuthenticationState> GetAuthenticationStateAsync()
         {
-            await Task.Delay(3000);
             var anonimous = new ClaimsIdentity();
             var oapUser = new ClaimsIdentity(new List<Claim>
         {
             new Claim("Nombre", "Super"),
             new Claim("Apellido", "Admin"),
             new Claim(ClaimTypes.Name, "dacanad@gnmail.com"),
-            new Claim(ClaimTypes.Role, "Admin")
+            new Claim(ClaimTypes.Role, "f")
         },
         authenticationType: "test");
 

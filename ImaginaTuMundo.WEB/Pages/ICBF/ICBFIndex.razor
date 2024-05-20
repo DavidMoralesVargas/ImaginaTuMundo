@@ -1,4 +1,9 @@
-﻿@page "/icbf"
+﻿@using Microsoft.AspNetCore.Authorization;
+
+@attribute [Authorize(Roles = "Admin")]
+
+
+@page "/icbf"
 @using CurrieTechnologies.Razor.SweetAlert2
 @inject IRepository repository
 @inject SweetAlertService sweetAlertService

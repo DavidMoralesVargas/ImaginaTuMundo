@@ -1,4 +1,9 @@
-﻿@page "/evidencia"
+﻿@using Microsoft.AspNetCore.Authorization;
+
+@attribute [Authorize(Roles = "Admin")]
+
+
+@page "/evidencia"
 @using CurrieTechnologies.Razor.SweetAlert2
 @inject IRepository repository
 @inject SweetAlertService sweetAlertService

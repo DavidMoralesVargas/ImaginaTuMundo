@@ -1,4 +1,9 @@
-﻿@page "/tareasmadres"
+﻿@using Microsoft.AspNetCore.Authorization;
+
+@attribute [Authorize(Roles = "Admin")]
+
+
+@page "/tareasmadres"
 @using CurrieTechnologies.Razor.SweetAlert2
 @inject IRepository repository
 @inject SweetAlertService sweetAlertService
