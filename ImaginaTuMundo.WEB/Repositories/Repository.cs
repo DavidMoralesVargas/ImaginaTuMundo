@@ -2,7 +2,7 @@
 using System.Text;
 
 namespace ImaginaTuMundo.WEB.Repositories
-{
+{//Por si acaso 3
     public class Repository : IRepository
     {
         private readonly HttpClient _httpClient;
