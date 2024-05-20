@@ -7,7 +7,7 @@
         Task<HttpResponseWrapper<object>> PostAsync<T>(string url, T model);
 
         Task<HttpResponseWrapper<TActionResponse>> PostAsync<T, TActionResponse>(string url, T model);
-
+        //Por si acaso 2
         Task<HttpResponseWrapper<object>> DeleteAsync<T>(string url);
 
         Task<HttpResponseWrapper<object>> PutAsync<T>(string url, T model);
