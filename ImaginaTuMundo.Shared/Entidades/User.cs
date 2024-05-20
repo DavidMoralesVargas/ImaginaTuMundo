@@ -35,5 +35,8 @@ namespace ImaginaTuMundo.Shared.Entidades
         //Enum
         public UserType UserType { get; set; }
 
+        public MadreComunitaria? Madre { get; set; }
+        public  RepresentanteLegal? Representante { get; set; }
+        public ICBF? ICBF { get; set; }
     }
 }

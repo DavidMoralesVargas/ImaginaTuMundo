@@ -1,0 +1,151 @@
+﻿@page "/EditUser"
+@using CurrieTechnologies.Razor.SweetAlert2;
+@using ImaginaTuMundo.Shared.DTOs;
+@using ImaginaTuMundo.Shared.Enums;
+@using ImaginaTuMundo.WEB.AuthenticationProviders;
+@using ImaginaTuMundo.WEB.Services
+@using ImaginaTuMundo.Shared
+@inject IRepository repository
+@inject SweetAlertService sweetAlertService
+@inject NavigationManager navigationManager
+@inject ILoginService loginService
+
+
+@if (user is null)
+{
+    <div class="spinner-border"/>
+}
+else
+{
+    <EditForm Model="user" OnValidSubmit="SaveUserAsync">
+        <DataAnnotationsValidator/>
+
+        <div class="card">
+            <div class="card-header">
+                <span>
+                    <a class="btn btn-sm btn-secondary float-end" href="/changesPassword">Cambiar Contraseña</a>
+                    <button class="btn btn-sm btn-primary float-end mx-2" type="submit">Guardar Cambios</button>
+                </span>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-6">
+                        <div class="mb-3">
+                            <label>Nombres:</label>
+                            <div>
+                                <InputText width="10" @bind-Value="user.Nombre"></InputText>
+                                <ValidationMessage For="@(()=>user.Nombre)" />
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label>Apellidos:</label>
+                            <div>
+                                <InputText width="10" @bind-Value="user.Apellido"></InputText>
+                                <ValidationMessage For="@(()=>user.Apellido)" />
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label>Documento:</label>
+                            <div>
+                                <InputText width="10" @bind-Value="user.Documento"></InputText>
+                                <ValidationMessage For="@(()=>user.Documento)" />
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label>Teléfono:</label>
+                            <div>
+                                <InputText width="10" @bind-Value="user.PhoneNumber"></InputText>
+                                <ValidationMessage For="@(()=>user.PhoneNumber)" />
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label>Dirección:</label>
+                            <div>
+                                <InputText width="10" @bind-Value="user.Direccion"></InputText>
+                                <ValidationMessage For="@(()=>user.Direccion)" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <InputImg Label="Foto" ImageSelected="ImageSelected" ImageURL="@imageUrl" />
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+    </EditForm>
+
+}
+@code {
+    private User? user;
+    private List<MadreComunitaria>? madreComunitarias;
+    private string? imageUrl;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadUserAsyc();
+        await LoadMadresAsync();
+
+        if (!string.IsNullOrEmpty(user!.Foto))
+        {
+            imageUrl = user.Foto;
+            user.Foto = null;
+        }
+
+    }
+
+    private async Task LoadUserAsyc()
+    {
+
+        var responseHTTP = await repository.GetAsync<User>($"/api/accounts");
+        if (responseHTTP.Error)
+        {
+            if (responseHTTP.HttpResponseMessage.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                navigationManager.NavigateTo("/");
+                return;
+            }
+            var messageError = await responseHTTP.GetErrorMessageAsync();
+            await sweetAlertService.FireAsync("Error", messageError, SweetAlertIcon.Error);
+            return;
+        }
+        user = responseHTTP.Response;
+    }
+
+    private void ImageSelected(string imagenBase64)
+    {
+        user!.Foto = imagenBase64;
+        imageUrl = null;
+    }
+
+
+
+    private async Task LoadMadresAsync()
+    {
+        var responseHttp = await repository.GetAsync<List<MadreComunitaria>>("/api/MadresComunitariasController/combo");
+        if (responseHttp.Error)
+        {
+            var message = await responseHttp.GetErrorMessageAsync();
+            await sweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+            return;
+        }
+
+        madreComunitarias = responseHttp.Response;
+    }
+
+
+    private async Task SaveUserAsync()
+    {
+        var responseHttp = await repository.PutAsync<User>("/api/accounts", user!);
+        if (responseHttp.Error)
+        {
+            var message = await responseHttp.GetErrorMessageAsync();
+            await sweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+            return;
+        }
+
+        navigationManager.NavigateTo("/");
+    }
+}

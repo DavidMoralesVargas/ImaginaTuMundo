@@ -97,6 +97,53 @@ namespace ImaginaTuMundo.API.Controllers
                 Expiration = expiration
             };
         }
+
+        [HttpPut]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<ActionResult> Put(User user)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(user.Foto))
+                {
+                    var photoUser = Convert.FromBase64String(user.Foto);
+                    user.Foto = await _fileStorage.SaveFileAsync(photoUser, ".jpg", _container);
+                }
+
+                var currentUser = await _userHelper.GetUserAsync(user.Email!);
+                if (currentUser == null)
+                {
+                    return NotFound();
+                }
+
+                currentUser.Documento = user.Documento;
+                currentUser.Nombre = user.Nombre;
+                currentUser.Apellido = user.Apellido;
+                currentUser.Direccion = user.Direccion;
+                currentUser.PhoneNumber = user.PhoneNumber;
+                currentUser.Foto = !string.IsNullOrEmpty(user.Foto) && user.Foto != currentUser.Foto ? user.Foto : currentUser.Foto;
+
+                var result = await _userHelper.UpdateUserAsync(currentUser);
+                if (result.Succeeded)
+                {
+                    return NoContent();
+                }
+
+                return BadRequest(result.Errors.FirstOrDefault());
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<ActionResult> Get()
+        {
+            return Ok(await _userHelper.GetUserAsync(User.Identity!.Name!));
+        }
+
     }
 }
 
