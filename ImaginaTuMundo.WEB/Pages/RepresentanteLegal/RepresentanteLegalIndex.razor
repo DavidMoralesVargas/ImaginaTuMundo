@@ -1,0 +1,144 @@
+﻿@page "/representantelegal"
+@using CurrieTechnologies.Razor.SweetAlert2
+@inject IRepository repository
+@inject SweetAlertService sweetAlertService
+@inject NavigationManager navigationManager
+
+<div class="card">
+    <div class="card-header">
+        <span>
+            <h1>REPRESENTANTE LEGAL</h1>
+            <a class="btn btn-primary btn-sm float-end" href="/representantelegal/create"><i class="bi bi-plus-circle" />Nueva Asociación</a>
+
+        </span>
+    </div>
+
+    <div class="card-body">
+
+        <GenericList MyList="representantes">
+
+            <Body>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Apellidos</th>
+                            <th>Rut</th>
+                            <th>Barrio</th>
+                            <th>Dirección</th>
+                            <th>Correo electronico</th>                            
+                            <th>Documento</th>
+
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in representantes!)
+                        {
+                            <tr>
+
+
+                                <td>
+                                    @item.Nombre
+                                </td>
+                                <td>
+                                    @item.Apellidos
+                                </td>
+                                <td>
+                                    @item.Rut
+                                </td>
+                                <td>
+                                    @item.Barrio
+                                </td>
+
+                                <td>
+                                    @item.Direccion
+                                </td>
+
+                                <td>
+                                    @item.CorreoElectronico
+                                </td>
+                                <td>
+                                    @item.Documento
+                                </td>
+
+
+                                <td>
+                                    <a href="/representantelegal/edit/@item.Id" class="btn btn-sm btn-warning"><i class="bi bi-pencil-square" /> Editar</a>
+                                    <button @onclick=@(() => DeleteAsycn(item)) class="btn btn-sm btn-danger"><i class="bi bi-trash-fill" /> Borrar</button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </Body>
+        </GenericList>
+    </div>
+</div>
+
+
+@code {
+    public List<RepresentanteLegal> representantes { get; set; }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadAsync();
+    }
+
+    private async Task LoadAsync()
+    {
+        var responseHttp = await repository.GetAsync<List<RepresentanteLegal>>("api/RepresentantesLegalesController");
+        if (responseHttp.Error)
+        {
+            var message = await responseHttp.GetErrorMessageAsync();
+            await sweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+            return;
+        }
+        representantes = responseHttp.Response;
+    }
+
+
+
+    private async Task DeleteAsycn(RepresentanteLegal representanteLegal)
+    {
+        var result = await sweetAlertService.FireAsync(new SweetAlertOptions
+            {
+                Title = "Confirmación",
+                Text = $"¿Estas seguro de querer borrar el representante: {representanteLegal.Nombre}?",
+                Icon = SweetAlertIcon.Question,
+                ShowCancelButton = true,
+            });
+        var confirm = string.IsNullOrEmpty(result.Value);
+        if (confirm)
+        {
+            return;
+        }
+
+        var responseHttp = await repository.DeleteAsync<Asociacion>($"api/RepresentantesLegalesController/{representanteLegal.Id}");
+        if (responseHttp.Error)
+        {
+            if (responseHttp.HttpResponseMessage.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                navigationManager.NavigateTo("/representantelegal");
+            }
+            else
+            {
+                var mensajeError = await responseHttp.GetErrorMessageAsync();
+                await sweetAlertService.FireAsync("Error", mensajeError, SweetAlertIcon.Error);
+            }
+            return;
+        }
+
+        await LoadAsync();
+        var toast = sweetAlertService.Mixin(new SweetAlertOptions
+            {
+                Toast = true,
+                Position = SweetAlertPosition.BottomEnd,
+                ShowConfirmButton = true,
+                Timer = 3000
+            });
+        await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Registro borrado con éxito.");
+    }
+
+}

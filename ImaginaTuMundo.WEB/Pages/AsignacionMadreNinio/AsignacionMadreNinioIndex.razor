@@ -1,0 +1,125 @@
+﻿@page "/asignacionmadre"
+@using CurrieTechnologies.Razor.SweetAlert2
+@inject IRepository repository
+@inject SweetAlertService sweetAlertService
+@inject NavigationManager navigationManager
+
+<div class="card">
+    <div class="card-header">
+        <span>
+            <h1>ASIGNACIÓN DE NIÑOS A MADRES</h1>
+            <a class="btn btn-primary btn-sm float-end" href="/asignacionmadre/create"><i class="bi bi-plus-circle" />Nueva Asignación</a>
+
+        </span>
+    </div>
+
+    <div class="card-body">
+
+        <GenericList MyList="asignacionMadreNinios">
+
+            <Body>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Id Madre Comunitaria</th>
+                            <th>Id Niño</th>
+                            <th>Fecha de Asignación</th>
+
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in asignacionMadreNinios!)
+                        {
+                            <tr>
+
+
+                                <td>
+                                    @item.MadreComunitariaId
+                                </td>
+                                <td>
+                                    @item.NiniosId
+                                </td>
+                                <td>
+                                    @item.FechaAsignacionMadre
+                                </td>
+                               
+                                <td>
+                                    <a href="/asignacionmadre/edit/@item.Id" class="btn btn-sm btn-warning"><i class="bi bi-pencil-square" /> Editar</a>
+                                    <button @onclick=@(() => DeleteAsycn(item)) class="btn btn-sm btn-danger"><i class="bi bi-trash-fill" /> Borrar</button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </Body>
+        </GenericList>
+    </div>
+</div>
+
+
+@code {
+    public List<AsignacionMadreNinio> asignacionMadreNinios { get; set; }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadAsync();
+    }
+
+    private async Task LoadAsync()
+    {
+        var responseHttp = await repository.GetAsync<List<AsignacionMadreNinio>>("api/AsignacionesMadreNino");
+        if (responseHttp.Error)
+        {
+            var message = await responseHttp.GetErrorMessageAsync();
+            await sweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+            return;
+        }
+        asignacionMadreNinios = responseHttp.Response;
+    }
+
+
+
+    private async Task DeleteAsycn(AsignacionMadreNinio asignacionMadre)
+    {
+        var result = await sweetAlertService.FireAsync(new SweetAlertOptions
+            {
+                Title = "Confirmación",
+                Text = $"¿Estas seguro de querer borrar la asignación: {asignacionMadre.Id}?",
+                Icon = SweetAlertIcon.Question,
+                ShowCancelButton = true,
+            });
+        var confirm = string.IsNullOrEmpty(result.Value);
+        if (confirm)
+        {
+            return;
+        }
+
+        var responseHttp = await repository.DeleteAsync<AsignacionMadreNinio>($"api/AsignacionesMadreNino/{asignacionMadre.Id}");
+        if (responseHttp.Error)
+        {
+            if (responseHttp.HttpResponseMessage.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                navigationManager.NavigateTo("/asignacionmadre");
+            }
+            else
+            {
+                var mensajeError = await responseHttp.GetErrorMessageAsync();
+                await sweetAlertService.FireAsync("Error", mensajeError, SweetAlertIcon.Error);
+            }
+            return;
+        }
+
+        await LoadAsync();
+        var toast = sweetAlertService.Mixin(new SweetAlertOptions
+            {
+                Toast = true,
+                Position = SweetAlertPosition.BottomEnd,
+                ShowConfirmButton = true,
+                Timer = 3000
+            });
+        await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Registro borrado con éxito.");
+    }
+
+}

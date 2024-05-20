@@ -1,0 +1,73 @@
+﻿@page "/seguimiento/edit/{Id:int}"
+@inject NavigationManager navigationManager
+@inject IRepository repository
+@inject SweetAlertService sweetAlertService
+@using CurrieTechnologies.Razor.SweetAlert2
+<h3>Editar</h3>
+
+@if (seguimientoNinios is null)
+{
+    <p>Cargando...</p>
+}
+else
+{
+    <SeguimientoNiniosForm @ref="seguimientoNiniosForm" seguimientoNinios="seguimientoNinios" OnValidSubmit="Editar" ReturnAction="Return" />
+
+}
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+    private SeguimientoNinios seguimientoNinios;
+    private SeguimientoNiniosForm seguimientoNiniosForm;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        var responseHttp = await repository.GetAsync<SeguimientoNinios>($"api/SeguimientosNiniosController/{Id}");
+        if (responseHttp.Error)
+        {
+            if (responseHttp.HttpResponseMessage.StatusCode == HttpStatusCode.NotFound)
+            {
+                navigationManager.NavigateTo("/seguimiento");
+            }
+            else
+            {
+                var messsage = await responseHttp.GetErrorMessageAsync();
+                await sweetAlertService.FireAsync("Error", messsage, SweetAlertIcon.Error);
+            }
+        }
+        else
+        {
+            seguimientoNinios = responseHttp.Response;
+        }
+    }
+
+
+    private async Task Editar()
+    {
+        var responseHttp = await repository.PutAsync("/api/SeguimientosNiniosController", seguimientoNinios);
+        if (responseHttp.Error)
+        {
+            var message = await responseHttp.GetErrorMessageAsync();
+    await sweetAlertService.FireAsync("Error", message);
+            return;
+        }
+
+    Return();
+    var toast = sweetAlertService.Mixin(new SweetAlertOptions
+    {
+        Toast = true,
+        Position = SweetAlertPosition.BottomEnd,
+        ShowConfirmButton = true,
+        Timer = 3000
+    });
+    await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Cambios guardados con éxito.");
+}
+
+        private void Return()
+        {
+        seguimientoNiniosForm!.FormularioPosteadoConExito = true;
+        navigationManager.NavigateTo("/seguimiento");
+        }
+   
+}

@@ -1,0 +1,48 @@
+﻿@page "/icbf/create"
+@inject NavigationManager navigationManager
+@inject IRepository repository
+@inject SweetAlertService sweetAlertService
+@using CurrieTechnologies.Razor.SweetAlert2
+<h3>Crear</h3>
+
+<ICBFForm @ref="iCBFForm" ICBFs="ICBFs" OnValidSubmit="Create" ReturnAction="Return" />
+
+@code {
+    private ICBF ICBFs = new ICBF();
+    private ICBFForm iCBFForm;
+
+
+    private async Task Create()
+    {
+        var responseHttp = await repository.PostAsync("/api/ICBFs", ICBFs);
+        if (responseHttp.Error)
+        {
+
+            var message = await responseHttp.GetErrorMessageAsync();
+            await sweetAlertService.FireAsync("Error", message);
+            return;
+
+        }
+
+        Return();
+        var toast = sweetAlertService.Mixin(new SweetAlertOptions
+            {
+
+                Toast = true,
+                Position = SweetAlertPosition.BottomEnd,
+                ShowConfirmButton = true,
+                Timer = 3000
+
+            });
+
+        await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Registro creado con éxito");
+    }
+
+    private void Return()
+    {
+
+        iCBFForm!.FormularioPosteadoConExito = true;
+        navigationManager.NavigateTo("/icbf");
+
+    }
+}

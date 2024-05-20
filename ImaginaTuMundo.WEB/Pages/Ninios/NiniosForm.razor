@@ -1,0 +1,141 @@
+﻿@inject SweetAlertService swal
+@using CurrieTechnologies.Razor.SweetAlert2
+
+<NavigationLock OnBeforeInternalNavigation="OnBeforeInternalNavigation"></NavigationLock>
+
+
+<EditForm EditContext="editContext" OnValidSubmit="OnValidSubmit">
+    <DataAnnotationsValidator />
+
+
+    <div class="mb-3">
+        <label>Nombre:</label>
+        <div>
+            <InputText width="10" @bind-Value="ninios.Nombre"></InputText>
+            <ValidationMessage For="@(() => ninios.Nombre)" />
+        </div>
+    </div>
+
+
+    <div class="mb-3">
+        <label>Apellidos:</label>
+        <div>
+            <InputText width="10" @bind-Value="ninios.Apellidos"></InputText>
+            <ValidationMessage For="@(() => ninios.Apellidos)" />
+        </div>
+    </div>
+
+
+    <div class="mb-3">
+        <label>Documento:</label>
+        <div>
+            <InputText width="10" @bind-Value="ninios.Documento"></InputText>
+            <ValidationMessage For="@(() => ninios.Documento)" />
+        </div>
+    </div>
+
+
+    <div class="mb-3">
+        <label>Dirección:</label>
+        <div>
+            <InputText width="10" @bind-Value="ninios.Direccion"></InputText>
+            <ValidationMessage For="@(() => ninios.Direccion)" />
+        </div>
+    </div>
+
+
+    <div class="mb-3">
+        <label>Fecha Nacimiento:</label>
+        <div>
+            <InputDate width="10" @bind-Value="ninios.FechaNacimiento"></InputDate>
+            <ValidationMessage For="@(() => ninios.FechaNacimiento)" />
+        </div>
+    </div>
+
+
+    <div class="mb-3">
+        <label>Nombre Madre:</label>
+        <div>
+            <InputText width="10" @bind-Value="ninios.NombreMadre"></InputText>
+            <ValidationMessage For="@(() => ninios.NombreMadre)" />
+        </div>
+    </div>
+
+
+    <div class="mb-3">
+        <label>Nombre Padre:</label>
+        <div>
+            <InputText width="10" @bind-Value="ninios.NombrePadre"></InputText>
+            <ValidationMessage For="@(() => ninios.NombrePadre)" />
+        </div>
+    </div>
+
+
+
+
+
+
+    <button class="btn btn-primary" type="submit"><i class="bi bi-floppy" />  Guardar Cambios</button>
+    <button class="btn btn-info" type="reset"><i class="bi bi-x-circle" />Limpiar</button>
+    <button class="btn btn-success" @onclick="ReturnAction"><i class="bi bi-arrow-left" />Regresar</button>
+</EditForm>
+
+@code {
+
+    private EditContext editContext = null!;
+    protected override void OnInitialized()
+    {
+        editContext = new(ninios);
+    }
+
+
+
+    [Parameter]
+    [EditorRequired]
+    public Ninios ninios { get; set; } = null!;
+
+    [Parameter]
+    [EditorRequired]
+    public EventCallback OnValidSubmit { get; set; }
+
+
+    [EditorRequired]
+    [Parameter]
+    public EventCallback ReturnAction { get; set; }
+
+    public bool FormularioPosteadoConExito { get; set; } = false;
+
+
+
+    private async Task OnBeforeInternalNavigation(LocationChangingContext context)
+    {
+        var formularioFueEditado = editContext.IsModified();
+
+        if (!formularioFueEditado)
+        {
+            return;
+        }
+
+        if (FormularioPosteadoConExito)
+        {
+            return;
+        }
+
+        var resultado = await swal.FireAsync(new SweetAlertOptions
+            {
+                Title = "Confirmación",
+                Text = "¿Deseas abandonar la página y perder los cambios?",
+                Icon = SweetAlertIcon.Warning,
+                ShowCancelButton = true
+            });
+
+        var confirmado = !string.IsNullOrEmpty(resultado.Value);
+
+        if (confirmado)
+        {
+            return;
+        }
+
+        context.PreventNavigation();
+    }
+}

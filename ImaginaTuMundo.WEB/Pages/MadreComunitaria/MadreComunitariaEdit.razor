@@ -1,0 +1,73 @@
+﻿@page "/madrescomunitarias/edit/{Id:int}"
+@inject NavigationManager navigationManager
+@inject IRepository repository
+@inject SweetAlertService sweetAlertService
+@using CurrieTechnologies.Razor.SweetAlert2
+<h3>Editar</h3>
+
+@if (madreComunitaria is null)
+{
+    <p>Cargando...</p>
+}
+else
+{
+    <MadreComunitariaForm @ref="madreComunitariaForm" madreComunitaria="madreComunitaria" OnValidSubmit="Editar" ReturnAction="Return" />
+
+}
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+    private MadreComunitaria madreComunitaria;
+    private MadreComunitariaForm madreComunitariaForm;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        var responseHttp = await repository.GetAsync<MadreComunitaria>($"api/MadresComunitariasController/{Id}");
+        if (responseHttp.Error)
+        {
+            if (responseHttp.HttpResponseMessage.StatusCode == HttpStatusCode.NotFound)
+            {
+                navigationManager.NavigateTo("/madrescomunitarias");
+            }
+            else
+            {
+                var messsage = await responseHttp.GetErrorMessageAsync();
+                await sweetAlertService.FireAsync("Error", messsage, SweetAlertIcon.Error);
+            }
+        }
+        else
+        {
+            madreComunitaria = responseHttp.Response;
+        }
+    }
+
+
+    private async Task Editar()
+    {
+        var responseHttp = await repository.PutAsync("/api/MadresComunitariasController", madreComunitaria);
+        if (responseHttp.Error)
+        {
+            var message = await responseHttp.GetErrorMessageAsync();
+    await sweetAlertService.FireAsync("Error", message);
+            return;
+        }
+
+    Return();
+    var toast = sweetAlertService.Mixin(new SweetAlertOptions
+    {
+        Toast = true,
+        Position = SweetAlertPosition.BottomEnd,
+        ShowConfirmButton = true,
+        Timer = 3000
+    });
+    await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Cambios guardados con éxito.");
+}
+
+        private void Return()
+        {
+        madreComunitariaForm!.FormularioPosteadoConExito = true;
+        navigationManager.NavigateTo("/madrescomunitarias");
+        }
+   
+}

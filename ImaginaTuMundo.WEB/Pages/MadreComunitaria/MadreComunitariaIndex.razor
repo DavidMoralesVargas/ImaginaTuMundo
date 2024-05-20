@@ -1,0 +1,153 @@
+﻿@page "/madrescomunitarias"
+@using CurrieTechnologies.Razor.SweetAlert2
+@inject IRepository repository
+@inject SweetAlertService sweetAlertService
+@inject NavigationManager navigationManager
+
+<div class="card">
+    <div class="card-header">
+        <span>
+            <h1>MADRES COMUNITARIAS</h1>
+            <a class="btn btn-primary btn-sm float-end" href="/madrescomunitarias/create"><i class="bi bi-plus-circle" />Nueva Madre</a>
+
+        </span>
+    </div>
+
+    <div class="card-body">
+
+        <GenericList MyList="MadresComunitarias">
+
+            <Body>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Apellido</th>
+                            <th>Dirección</th>
+                            <th>Barrio</th>
+                            <th>Celular</th>
+                            <th>Documento</th>
+                            <th>CertificadoManipulacionAlimentos</th>
+                            <th>Foto</th>
+                            <th>CorreoElectronico</th>
+                            <th>AsociacionId</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in MadresComunitarias!)
+                        {
+                            <tr>
+
+
+                                <td>
+                                    @item.Nombre
+                                </td>
+                                <td>
+                                    @item.Apellidos
+                                </td>
+                                <td>
+                                    @item.Direccion
+                                </td>
+                                <td>
+                                    @item.Barrio
+                                </td>
+                                <td>
+                                    @item.Celular
+                                </td>
+                                <td>
+                                    @item.Documento
+                                </td>
+                                <td>
+                                    @item.CertificadoManipulacionAlimentos
+                                </td>
+
+                                <td>
+                                    @item.Foto
+                                </td>
+                                <td>
+                                    @item.CorreoElectronico
+                                </td>
+                                <td>
+                                    @item.AsociacionId
+                                </td>
+
+                                <td>
+                                    <a href="/madrescomunitarias/edit/@item.Id" class="btn btn-sm btn-warning"><i class="bi bi-pencil-square" /> Editar</a>
+                                    <button @onclick=@(() => DeleteAsycn(item)) class="btn btn-sm btn-danger"><i class="bi bi-trash-fill" /> Borrar</button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </Body>
+        </GenericList>
+    </div>
+</div>
+
+
+@code {
+    public List<MadreComunitaria> MadresComunitarias { get; set; }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadAsync();
+    }
+
+    private async Task LoadAsync()
+    {
+        var responseHttp = await repository.GetAsync<List<MadreComunitaria>>("api/MadresComunitariasController");
+        if (responseHttp.Error)
+        {
+            var message = await responseHttp.GetErrorMessageAsync();
+            await sweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+            return;
+        }
+        MadresComunitarias = responseHttp.Response;
+    }
+
+
+
+    private async Task DeleteAsycn(MadreComunitaria madreComunitaria)
+    {
+        var result = await sweetAlertService.FireAsync(new SweetAlertOptions
+            {
+                Title = "Confirmación",
+                Text = $"¿Estas seguro de querer borrar la madre: {madreComunitaria.Nombre}?",
+                Icon = SweetAlertIcon.Question,
+                ShowCancelButton = true,
+            });
+        var confirm = string.IsNullOrEmpty(result.Value);
+        if (confirm)
+        {
+            return;
+        }
+
+        var responseHttp = await repository.DeleteAsync<MadreComunitaria>($"api/MadresComunitariasController/{madreComunitaria.Id}");
+        if (responseHttp.Error)
+        {
+            if (responseHttp.HttpResponseMessage.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                navigationManager.NavigateTo("/madrescomunitarias");
+            }
+            else
+            {
+                var mensajeError = await responseHttp.GetErrorMessageAsync();
+                await sweetAlertService.FireAsync("Error", mensajeError, SweetAlertIcon.Error);
+            }
+            return;
+        }
+
+        await LoadAsync();
+        var toast = sweetAlertService.Mixin(new SweetAlertOptions
+            {
+                Toast = true,
+                Position = SweetAlertPosition.BottomEnd,
+                ShowConfirmButton = true,
+                Timer = 3000
+            });
+        await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Registro borrado con éxito.");
+    }
+
+}

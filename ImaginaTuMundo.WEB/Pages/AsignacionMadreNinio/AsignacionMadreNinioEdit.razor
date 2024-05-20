@@ -1,0 +1,73 @@
+﻿@page "/asignacionmadre/edit/{Id:int}"
+@inject NavigationManager navigationManager
+@inject IRepository repository
+@inject SweetAlertService sweetAlertService
+@using CurrieTechnologies.Razor.SweetAlert2
+<h3>Editar</h3>
+
+@if (asignacionMadreNinio is null)
+{
+    <p>Cargando...</p>
+}
+else
+{
+    <AsignacionMadreNinioForm @ref="asignacionMadreNinioForm" asignacionMadreNinio="asignacionMadreNinio" OnValidSubmit="Editar" ReturnAction="Return" />
+
+}
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+    private AsignacionMadreNinio asignacionMadreNinio;
+    private AsignacionMadreNinioForm asignacionMadreNinioForm;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        var responseHttp = await repository.GetAsync<AsignacionMadreNinio>($"api/AsignacionesMadreNino/{Id}");
+        if (responseHttp.Error)
+        {
+            if (responseHttp.HttpResponseMessage.StatusCode == HttpStatusCode.NotFound)
+            {
+                navigationManager.NavigateTo("/asignacionmadre");
+            }
+            else
+            {
+                var messsage = await responseHttp.GetErrorMessageAsync();
+                await sweetAlertService.FireAsync("Error", messsage, SweetAlertIcon.Error);
+            }
+        }
+        else
+        {
+            asignacionMadreNinio = responseHttp.Response;
+        }
+    }
+
+
+    private async Task Editar()
+    {
+        var responseHttp = await repository.PutAsync("/api/AsignacionesMadreNino", asignacionMadreNinio);
+        if (responseHttp.Error)
+        {
+            var message = await responseHttp.GetErrorMessageAsync();
+    await sweetAlertService.FireAsync("Error", message);
+            return;
+        }
+
+    Return();
+    var toast = sweetAlertService.Mixin(new SweetAlertOptions
+    {
+        Toast = true,
+        Position = SweetAlertPosition.BottomEnd,
+        ShowConfirmButton = true,
+        Timer = 3000
+    });
+    await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Cambios guardados con éxito.");
+}
+
+        private void Return()
+        {
+        asignacionMadreNinioForm!.FormularioPosteadoConExito = true;
+        navigationManager.NavigateTo("/asignacionmadre");
+        }
+   
+}

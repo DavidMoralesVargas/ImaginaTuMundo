@@ -1,0 +1,53 @@
+﻿@page "/evidencia/create"
+@inject NavigationManager navigationManager
+@inject IRepository repository
+@inject SweetAlertService sweetAlertService
+@using CurrieTechnologies.Razor.SweetAlert2
+<h3>Crear</h3>
+
+<EvidenciaForm @ref="evidenciaForm" evidencia="evidencia" OnValidSubmit="Create" ReturnAction="Return" />
+
+@code {
+    private Evidencia evidencia = new Evidencia();
+    private EvidenciaForm evidenciaForm;
+
+
+
+    private async Task Create()
+    {
+
+
+        var responseHttp = await repository.PostAsync("/api/EvidenciasController", evidencia);
+        if (responseHttp.Error)
+        {
+
+            var message = await responseHttp.GetErrorMessageAsync();
+            await sweetAlertService.FireAsync("Error", message);
+            return;
+
+
+        }
+
+        Return();
+        var toast = sweetAlertService.Mixin(new SweetAlertOptions
+            {
+
+                Toast = true,
+                Position = SweetAlertPosition.BottomEnd,
+                ShowConfirmButton = true,
+                Timer = 3000
+
+            });
+
+
+        await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Registro creado con éxito");
+    }
+
+    private void Return()
+    {
+        evidenciaForm!.FormularioPosteadoConExito = true;
+    navigationManager.NavigateTo("/evidencia");
+    }
+
+
+}

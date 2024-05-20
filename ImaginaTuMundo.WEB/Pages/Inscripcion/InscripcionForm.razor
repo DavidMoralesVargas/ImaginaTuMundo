@@ -1,0 +1,157 @@
+﻿@inject SweetAlertService swal
+@using CurrieTechnologies.Razor.SweetAlert2
+
+<NavigationLock OnBeforeInternalNavigation="OnBeforeInternalNavigation"></NavigationLock>
+
+
+<EditForm EditContext="editContext" OnValidSubmit="OnValidSubmit">
+    <DataAnnotationsValidator />
+
+
+    <div class="mb-3">
+        <label>Registro civil:</label>
+        <div>
+            <InputText width="10" @bind-Value="inscripcion.RegistroCivil"></InputText>
+            <ValidationMessage For="@(() => inscripcion.RegistroCivil)" />
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label>Carné de vacunación:</label>
+        <div>
+            <InputText width="10" @bind-Value="inscripcion.CarneVacunas"></InputText>
+            <ValidationMessage For="@(() => inscripcion.CarneVacunas)" />
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label>Crecimiento y Desarrollo:</label>
+        <div>
+            <InputText width="10" @bind-Value="inscripcion.CremientoYDesarrollo"></InputText>
+            <ValidationMessage For="@(() => inscripcion.CremientoYDesarrollo)" />
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label>Cuenta de Servicios:</label>
+        <div>
+            <InputText width="10" @bind-Value="inscripcion.CuentaServicios"></InputText>
+            <ValidationMessage For="@(() => inscripcion.CuentaServicios)" />
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label>Cédula de Mamá:</label>
+        <div>
+            <InputText width="10" @bind-Value="inscripcion.CedulaMama"></InputText>
+            <ValidationMessage For="@(() => inscripcion.CedulaMama)" />
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label>Cédula de Papá:</label>
+        <div>
+            <InputText width="10" @bind-Value="inscripcion.CedulaPapa"></InputText>
+            <ValidationMessage For="@(() => inscripcion.CedulaPapa)" />
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label>Sisben:</label>
+        <div>
+            <InputText width="10" @bind-Value="inscripcion.Sisben"></InputText>
+            <ValidationMessage For="@(() => inscripcion.Sisben)" />
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label>Fosyga:</label>
+        <div>
+            <InputText width="10" @bind-Value="inscripcion.Fosyga"></InputText>
+            <ValidationMessage For="@(() => inscripcion.Fosyga)" />
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label>Id Usuario ICBF:</label>
+        <div>
+            <InputNumber width="10" @bind-Value="inscripcion.ICBFId"></InputNumber>
+            <ValidationMessage For="@(() => inscripcion.ICBFId)" />
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label>Id Niño:</label>
+        <div>
+            <InputNumber width="10" @bind-Value="inscripcion.NiniosId"></InputNumber>
+            <ValidationMessage For="@(() => inscripcion.NiniosId)" />
+        </div>
+    </div>
+
+
+
+
+    <button class="btn btn-primary" type="submit"><i class="bi bi-floppy" />  Guardar Cambios</button>
+    <button class="btn btn-info" type="reset"><i class="bi bi-x-circle" />Limpiar</button>
+    <button class="btn btn-success" @onclick="ReturnAction"><i class="bi bi-arrow-left" />Regresar</button>
+</EditForm>
+
+@code {
+
+    private EditContext editContext = null!;
+    protected override void OnInitialized()
+    {
+        editContext = new(inscripcion);
+    }
+
+
+
+    [Parameter]
+    [EditorRequired]
+    public Inscripcion inscripcion { get; set; } = null!;
+
+    [Parameter]
+    [EditorRequired]
+    public EventCallback OnValidSubmit { get; set; }
+
+
+    [EditorRequired]
+    [Parameter]
+    public EventCallback ReturnAction { get; set; }
+
+    public bool FormularioPosteadoConExito { get; set; } = false;
+
+
+
+    private async Task OnBeforeInternalNavigation(LocationChangingContext context)
+    {
+        var formularioFueEditado = editContext.IsModified();
+
+        if (!formularioFueEditado)
+        {
+            return;
+        }
+
+        if (FormularioPosteadoConExito)
+        {
+            return;
+        }
+
+        var resultado = await swal.FireAsync(new SweetAlertOptions
+            {
+                Title = "Confirmación",
+                Text = "¿Deseas abandonar la página y perder los cambios?",
+                Icon = SweetAlertIcon.Warning,
+                ShowCancelButton = true
+            });
+
+        var confirmado = !string.IsNullOrEmpty(resultado.Value);
+
+        if (confirmado)
+        {
+            return;
+        }
+
+        context.PreventNavigation();
+    }
+}

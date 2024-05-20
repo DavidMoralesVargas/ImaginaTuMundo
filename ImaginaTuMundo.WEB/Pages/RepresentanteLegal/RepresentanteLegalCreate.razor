@@ -1,0 +1,48 @@
+﻿@page "/representantelegal/create"
+@inject NavigationManager navigationManager
+@inject IRepository repository
+@inject SweetAlertService sweetAlertService
+@using CurrieTechnologies.Razor.SweetAlert2
+<h3>Crear</h3>
+
+<RepresentanteLegalForm @ref="representanteLegalForm" representanteLegal="representanteLegal" OnValidSubmit="Create" ReturnAction="Return" />
+
+@code {
+    private RepresentanteLegal representanteLegal = new RepresentanteLegal();
+    private RepresentanteLegalForm representanteLegalForm;
+
+
+    private async Task Create()
+    {
+        var responseHttp = await repository.PostAsync("/api/RepresentantesLegalesController", representanteLegal);
+        if (responseHttp.Error)
+        {
+
+            var message = await responseHttp.GetErrorMessageAsync();
+            await sweetAlertService.FireAsync("Error", message);
+            return;
+
+        }
+
+        Return();
+        var toast = sweetAlertService.Mixin(new SweetAlertOptions
+            {
+
+                Toast = true,
+                Position = SweetAlertPosition.BottomEnd,
+                ShowConfirmButton = true,
+                Timer = 3000
+
+            });
+
+        await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Registro creado con éxito");
+    }
+
+    private void Return()
+    {
+
+        representanteLegalForm!.FormularioPosteadoConExito = true;
+        navigationManager.NavigateTo("/representantelegal");
+
+    }
+}

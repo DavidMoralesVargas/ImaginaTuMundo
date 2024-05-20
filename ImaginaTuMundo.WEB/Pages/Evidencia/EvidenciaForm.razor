@@ -1,0 +1,160 @@
+﻿@inject SweetAlertService swal
+@using CurrieTechnologies.Razor.SweetAlert2
+
+<NavigationLock OnBeforeInternalNavigation="OnBeforeInternalNavigation"></NavigationLock>
+
+
+<EditForm EditContext="editContext" OnValidSubmit="OnValidSubmit">
+    <DataAnnotationsValidator />
+
+
+
+    <div class="mb-3">
+        <label>Cronograma:</label>
+        <div>
+            <InputText width="10" @bind-Value="evidencia.Cronograma"></InputText>
+            <ValidationMessage For="@(() => evidencia.Cronograma)" />
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label>Asistencia:</label>
+        <div>
+            <InputText width="10" @bind-Value="evidencia.Asistencia"></InputText>
+            <ValidationMessage For="@(() => evidencia.Asistencia)" />
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label>Observaciones:</label>
+        <div>
+            <InputText width="10" @bind-Value="evidencia.Observaciones"></InputText>
+            <ValidationMessage For="@(() => evidencia.Observaciones)" />
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label>Novedades:</label>
+        <div>
+            <InputText width="10" @bind-Value="evidencia.Novedades"></InputText>
+            <ValidationMessage For="@(() => evidencia.Novedades)" />
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label>Evaluación Diaria:</label>
+        <div>
+            <InputText width="10" @bind-Value="evidencia.EvaluacionDiaria"></InputText>
+            <ValidationMessage For="@(() => evidencia.EvaluacionDiaria)" />
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label>Actividades Mensuales:</label>
+        <div>
+            <InputText width="10" @bind-Value="evidencia.ActividadesMensuales"></InputText>
+            <ValidationMessage For="@(() => evidencia.ActividadesMensuales)" />
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label>Escala y Evaluación:</label>
+        <div>
+            <InputText width="10" @bind-Value="evidencia.EscalaEvaluacion"></InputText>
+            <ValidationMessage For="@(() => evidencia.EscalaEvaluacion)" />
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label>Fecha de Envio:</label>
+        <div>
+            <InputDate width="10" @bind-Value="evidencia.FechaDeEnvio"></InputDate>
+            <ValidationMessage For="@(() => evidencia.FechaDeEnvio)" />
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label>Id Representante Legal:</label>
+        <div>
+            <InputNumber width="10" @bind-Value="evidencia.RepresentanteLegalId"></InputNumber>
+            <ValidationMessage For="@(() => evidencia.RepresentanteLegalId)" />
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label>Id Madre Comunitaria:</label>
+        <div>
+            <InputNumber width="10" @bind-Value="evidencia.MadreComunitariaId"></InputNumber>
+            <ValidationMessage For="@(() => evidencia.MadreComunitariaId)" />
+        </div>
+    </div>
+
+
+
+
+
+
+    <button class="btn btn-primary" type="submit"><i class="bi bi-floppy" />  Guardar Cambios</button>
+    <button class="btn btn-info" type="reset"><i class="bi bi-x-circle" />Limpiar</button>
+    <button class="btn btn-success" @onclick="ReturnAction"><i class="bi bi-arrow-left" />Regresar</button>
+</EditForm>
+
+@code {
+
+    private EditContext editContext = null!;
+    protected override void OnInitialized()
+    {
+        editContext = new(evidencia);
+    }
+
+
+
+    [Parameter]
+    [EditorRequired]
+    public Evidencia evidencia { get; set; } = null!;
+
+    [Parameter]
+    [EditorRequired]
+    public EventCallback OnValidSubmit { get; set; }
+
+
+    [EditorRequired]
+    [Parameter]
+    public EventCallback ReturnAction { get; set; }
+
+    public bool FormularioPosteadoConExito { get; set; } = false;
+
+
+
+    private async Task OnBeforeInternalNavigation(LocationChangingContext context)
+    {
+        var formularioFueEditado = editContext.IsModified();
+
+        if (!formularioFueEditado)
+        {
+            return;
+        }
+
+        if (FormularioPosteadoConExito)
+        {
+            return;
+        }
+
+        var resultado = await swal.FireAsync(new SweetAlertOptions
+            {
+                Title = "Confirmación",
+                Text = "¿Deseas abandonar la página y perder los cambios?",
+                Icon = SweetAlertIcon.Warning,
+                ShowCancelButton = true
+            });
+
+        var confirmado = !string.IsNullOrEmpty(resultado.Value);
+
+        if (confirmado)
+        {
+            return;
+        }
+
+        context.PreventNavigation();
+    }
+}

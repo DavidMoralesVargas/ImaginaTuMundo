@@ -1,0 +1,147 @@
+﻿
+
+@page "/asociacion"
+@using CurrieTechnologies.Razor.SweetAlert2
+@inject IRepository repository
+@inject SweetAlertService sweetAlertService
+@inject NavigationManager navigationManager
+<div class="card">
+    <div class="card-header">
+        <span>
+            <h1>ASOCIACIONES</h1>
+            <a class="btn btn-primary btn-sm float-end" href="/asociacion/create"><i class="bi bi-plus-circle" />Nueva Asociación</a>
+
+        </span>
+    </div>
+
+    <div class="card-body">
+
+        <GenericList MyList="asociaciones">
+
+            <Body>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Nit</th>
+                            <th>Rut</th>
+                            <th>Barrio</th>
+                            <th>Celular</th>
+                            <th>Dirección</th>
+                            <th>RepresentacionJuridica</th>
+                            <th>CorreoElectronico</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in asociaciones!)
+                        {
+                            <tr>
+
+
+                                <td>
+                                    @item.Nombre
+                                </td>
+                                <td>
+                                    @item.Nit
+                                </td>
+                                <td>
+                                    @item.Rut
+                                </td>
+                                <td>
+                                    @item.Barrio
+                                </td>
+                                <td>
+                                    @item.Celular
+                                </td>
+                                <td>
+                                    @item.Direccion
+                                </td>
+                                <td>
+                                    @item.RepresentacionJuridica
+                                </td>
+
+                                <td>
+                                    @item.CorreoElectronico
+                                </td>
+
+
+                                <td>
+                                    <a href="/asociacion/edit/@item.Id" class="btn btn-sm btn-warning"><i class="bi bi-pencil-square" /> Editar</a>
+                                    <button @onclick=@(() => DeleteAsycn(item)) class="btn btn-sm btn-danger"><i class="bi bi-trash-fill" /> Borrar</button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </Body>
+        </GenericList>
+    </div>
+</div>
+
+
+@code {
+    public List<Asociacion> asociaciones { get; set; }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadAsync();
+    }
+
+    private async Task LoadAsync()
+    {
+        var responseHttp = await repository.GetAsync<List<Asociacion>>("api/Asociaciones");
+        if (responseHttp.Error)
+        {
+            var message = await responseHttp.GetErrorMessageAsync();
+            await sweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+            return;
+        }
+        asociaciones = responseHttp.Response;
+    }
+
+
+
+    private async Task DeleteAsycn(Asociacion asociacion)
+    {
+        var result = await sweetAlertService.FireAsync(new SweetAlertOptions
+            {
+                Title = "Confirmación",
+                Text = $"¿Estas seguro de querer borrar la asociación: {asociacion.Nombre}?",
+                Icon = SweetAlertIcon.Question,
+                ShowCancelButton = true,
+            });
+        var confirm = string.IsNullOrEmpty(result.Value);
+        if (confirm)
+        {
+            return;
+        }
+
+        var responseHttp = await repository.DeleteAsync<Asociacion>($"api/Asociaciones/{asociacion.Id}");
+        if (responseHttp.Error)
+        {
+            if (responseHttp.HttpResponseMessage.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                navigationManager.NavigateTo("/asociacion");
+            }
+            else
+            {
+                var mensajeError = await responseHttp.GetErrorMessageAsync();
+                await sweetAlertService.FireAsync("Error", mensajeError, SweetAlertIcon.Error);
+            }
+            return;
+        }
+
+        await LoadAsync();
+        var toast = sweetAlertService.Mixin(new SweetAlertOptions
+            {
+                Toast = true,
+                Position = SweetAlertPosition.BottomEnd,
+                ShowConfirmButton = true,
+                Timer = 3000
+            });
+        await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Registro borrado con éxito.");
+    }
+
+}

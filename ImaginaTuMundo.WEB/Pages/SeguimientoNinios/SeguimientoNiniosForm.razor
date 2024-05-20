@@ -1,0 +1,160 @@
+﻿@inject SweetAlertService swal
+@using CurrieTechnologies.Razor.SweetAlert2
+
+<NavigationLock OnBeforeInternalNavigation="OnBeforeInternalNavigation"></NavigationLock>
+
+
+<EditForm EditContext="editContext" OnValidSubmit="OnValidSubmit">
+    <DataAnnotationsValidator />
+
+
+
+    <div class="mb-3">
+        <label>Cronograma:</label>
+        <div>
+            <InputText width="10" @bind-Value="seguimientoNinios.Cronograma"></InputText>
+            <ValidationMessage For="@(() => seguimientoNinios.Cronograma)" />
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label>Asistencia:</label>
+        <div>
+            <InputText width="10" @bind-Value="seguimientoNinios.Asistencia"></InputText>
+            <ValidationMessage For="@(() => seguimientoNinios.Asistencia)" />
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label>Observaciones:</label>
+        <div>
+            <InputText width="10" @bind-Value="seguimientoNinios.Observaciones"></InputText>
+            <ValidationMessage For="@(() => seguimientoNinios.Observaciones)" />
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label>Novedades:</label>
+        <div>
+            <InputText width="10" @bind-Value="seguimientoNinios.Novedades"></InputText>
+            <ValidationMessage For="@(() => seguimientoNinios.Novedades)" />
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label>Evaluación Diaria:</label>
+        <div>
+            <InputText width="10" @bind-Value="seguimientoNinios.EvaluacionDiaria"></InputText>
+            <ValidationMessage For="@(() => seguimientoNinios.EvaluacionDiaria)" />
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label>Actividades Mensuales:</label>
+        <div>
+            <InputText width="10" @bind-Value="seguimientoNinios.ActividadesMensuales"></InputText>
+            <ValidationMessage For="@(() => seguimientoNinios.ActividadesMensuales)" />
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label>Escala y Evaluación:</label>
+        <div>
+            <InputText width="10" @bind-Value="seguimientoNinios.EscalaEvaluacion"></InputText>
+            <ValidationMessage For="@(() => seguimientoNinios.EscalaEvaluacion)" />
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label>Fecha de asignación:</label>
+        <div>
+            <InputDate width="10" @bind-Value="seguimientoNinios.FechaAsignacion"></InputDate>
+            <ValidationMessage For="@(() => seguimientoNinios.FechaAsignacion)" />
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label>Id Representante Legal:</label>
+        <div>
+            <InputNumber width="10" @bind-Value="seguimientoNinios.RepresentanteLegalId"></InputNumber>
+            <ValidationMessage For="@(() => seguimientoNinios.RepresentanteLegalId)" />
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label>Id Madre Comunitaria:</label>
+        <div>
+            <InputNumber width="10" @bind-Value="seguimientoNinios.MadreComunitariaId"></InputNumber>
+            <ValidationMessage For="@(() => seguimientoNinios.MadreComunitariaId)" />
+        </div>
+    </div>
+
+
+
+
+
+
+    <button class="btn btn-primary" type="submit"><i class="bi bi-floppy" />  Guardar Cambios</button>
+    <button class="btn btn-info" type="reset"><i class="bi bi-x-circle" />Limpiar</button>
+    <button class="btn btn-success" @onclick="ReturnAction"><i class="bi bi-arrow-left" />Regresar</button>
+</EditForm>
+
+@code {
+
+    private EditContext editContext = null!;
+    protected override void OnInitialized()
+    {
+        editContext = new(seguimientoNinios);
+    }
+
+
+
+    [Parameter]
+    [EditorRequired]
+    public SeguimientoNinios seguimientoNinios { get; set; } = null!;
+
+    [Parameter]
+    [EditorRequired]
+    public EventCallback OnValidSubmit { get; set; }
+
+
+    [EditorRequired]
+    [Parameter]
+    public EventCallback ReturnAction { get; set; }
+
+    public bool FormularioPosteadoConExito { get; set; } = false;
+
+
+
+    private async Task OnBeforeInternalNavigation(LocationChangingContext context)
+    {
+        var formularioFueEditado = editContext.IsModified();
+
+        if (!formularioFueEditado)
+        {
+            return;
+        }
+
+        if (FormularioPosteadoConExito)
+        {
+            return;
+        }
+
+        var resultado = await swal.FireAsync(new SweetAlertOptions
+            {
+                Title = "Confirmación",
+                Text = "¿Deseas abandonar la página y perder los cambios?",
+                Icon = SweetAlertIcon.Warning,
+                ShowCancelButton = true
+            });
+
+        var confirmado = !string.IsNullOrEmpty(resultado.Value);
+
+        if (confirmado)
+        {
+            return;
+        }
+
+        context.PreventNavigation();
+    }
+}

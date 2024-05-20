@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34902.65
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImaginaTuMundo.Shared", "ImaginaTuMundo.Shared\ImaginaTuMundo.Shared.csproj", "{E33E8E37-1EAD-45ED-B76F-4E810FD25608}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ImaginaTuMundo.Shared", "ImaginaTuMundo.Shared\ImaginaTuMundo.Shared.csproj", "{E33E8E37-1EAD-45ED-B76F-4E810FD25608}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImaginaTuMundo.API", "ImaginaTuMundo.API\ImaginaTuMundo.API.csproj", "{244F18D8-7520-4053-AC70-B60B20B9F78F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ImaginaTuMundo.API", "ImaginaTuMundo.API\ImaginaTuMundo.API.csproj", "{244F18D8-7520-4053-AC70-B60B20B9F78F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImaginaTuMundo.WEB", "ImaginaTuMundo.WEB\ImaginaTuMundo.WEB.csproj", "{D312B125-C16C-49B4-A9C4-DB7199B83257}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ImaginaTuMundo.WEB", "ImaginaTuMundo.WEB\ImaginaTuMundo.WEB.csproj", "{D312B125-C16C-49B4-A9C4-DB7199B83257}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

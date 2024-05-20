@@ -1,0 +1,150 @@
+﻿@page "/tareasmadres"
+@using CurrieTechnologies.Razor.SweetAlert2
+@inject IRepository repository
+@inject SweetAlertService sweetAlertService
+@inject NavigationManager navigationManager
+
+<div class="card">
+    <div class="card-header">
+        <span>
+            <h1>TAREAS PARA MADRES</h1>
+            <a class="btn btn-primary btn-sm float-end" href="/tareasmadres/create"><i class="bi bi-plus-circle" />Nueva tarea</a>
+
+        </span>
+    </div>
+
+    <div class="card-body">
+
+        <GenericList MyList="tareasMadres">
+
+            <Body>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Cronograma</th>
+                            <th>Asistencia</th>
+                            <th>Observaciones</th>
+                            <th>Novedades</th>
+                            <th>EvaluacionDiaria</th>
+                            <th>ActividadesMensuales</th>
+                            <th>EscalaEvaluacion</th>
+                            <th>ICBFId</th>
+                            <th>RepresentanteLegalId</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in tareasMadres!)
+                        {
+                            <tr>
+
+
+                                <td>
+                                    @item.Cronograma
+                                </td>
+                                <td>
+                                    @item.Asistencia
+                                </td>
+                                <td>
+                                    @item.Observaciones
+                                </td>
+                                <td>
+                                    @item.Novedades
+                                </td>
+                                <td>
+                                    @item.EvaluacionDiaria
+                                </td>
+                                <td>
+                                    @item.ActividadesMensuales
+                                </td>
+                                <td>
+                                    @item.EscalaEvaluacion
+                                </td>
+
+                                <td>
+                                    @item.ICBFId
+                                </td>
+                                <td>
+                                    @item.RepresentanteLegalId
+                                </td>
+
+
+                                <td>
+                                    <a href="/tareasmadres/edit/@item.Id" class="btn btn-sm btn-warning"><i class="bi bi-pencil-square" /> Editar</a>
+                                    <button @onclick=@(() => DeleteAsycn(item)) class="btn btn-sm btn-danger"><i class="bi bi-trash-fill" /> Borrar</button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </Body>
+        </GenericList>
+    </div>
+</div>
+
+
+@code {
+    public List<TareaParaMadre> tareasMadres { get; set; }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadAsync();
+    }
+
+    private async Task LoadAsync()
+    {
+        var responseHttp = await repository.GetAsync<List<TareaParaMadre>>("api/TareasParaMadresController");
+        if (responseHttp.Error)
+        {
+            var message = await responseHttp.GetErrorMessageAsync();
+            await sweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+            return;
+        }
+        tareasMadres = responseHttp.Response;
+    }
+
+
+
+    private async Task DeleteAsycn(TareaParaMadre tareaParaMadre)
+    {
+        var result = await sweetAlertService.FireAsync(new SweetAlertOptions
+            {
+                Title = "Confirmación",
+                Text = $"¿Estas seguro de querer borrar la tarea con Id: {tareaParaMadre.Id}?",
+                Icon = SweetAlertIcon.Question,
+                ShowCancelButton = true,
+            });
+        var confirm = string.IsNullOrEmpty(result.Value);
+        if (confirm)
+        {
+            return;
+        }
+
+        var responseHttp = await repository.DeleteAsync<Asociacion>($"api/TareasParaMadresController/{tareaParaMadre.Id}");
+        if (responseHttp.Error)
+        {
+            if (responseHttp.HttpResponseMessage.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                navigationManager.NavigateTo("/tareasmadres");
+            }
+            else
+            {
+                var mensajeError = await responseHttp.GetErrorMessageAsync();
+                await sweetAlertService.FireAsync("Error", mensajeError, SweetAlertIcon.Error);
+            }
+            return;
+        }
+
+        await LoadAsync();
+        var toast = sweetAlertService.Mixin(new SweetAlertOptions
+            {
+                Toast = true,
+                Position = SweetAlertPosition.BottomEnd,
+                ShowConfirmButton = true,
+                Timer = 3000
+            });
+        await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Registro borrado con éxito.");
+    }
+
+}

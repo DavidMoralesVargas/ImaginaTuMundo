@@ -1,0 +1,143 @@
+﻿@inject SweetAlertService swal
+@using CurrieTechnologies.Razor.SweetAlert2
+
+<NavigationLock OnBeforeInternalNavigation="OnBeforeInternalNavigation"></NavigationLock>
+
+
+<EditForm EditContext="editContext" OnValidSubmit="OnValidSubmit">
+    <DataAnnotationsValidator />
+
+
+    <div class="mb-3">
+        <label>Nombre:</label>
+        <div>
+            <InputText width="10" @bind-Value="asociaciones.Nombre"></InputText>
+            <ValidationMessage For="@(() => asociaciones.Nombre)" />
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label>Nit:</label>
+        <div>
+            <InputText width="10" @bind-Value="asociaciones.Nit"></InputText>
+            <ValidationMessage For="@(() => asociaciones.Nit)" />
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label>Rut:</label>
+        <div>
+            <InputText width="10" @bind-Value="asociaciones.Rut"></InputText>
+            <ValidationMessage For="@(() => asociaciones.Rut)" />
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label>Dirección:</label>
+        <div>
+            <InputText width="10" @bind-Value="asociaciones.Direccion"></InputText>
+            <ValidationMessage For="@(() => asociaciones.Direccion)" />
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label>Barrio:</label>
+        <div>
+            <InputText width="10" @bind-Value="asociaciones.Barrio"></InputText>
+            <ValidationMessage For="@(() => asociaciones.Barrio)" />
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label>Celular:</label>
+        <div>
+            <InputText width="10" @bind-Value="asociaciones.Celular"></InputText>
+            <ValidationMessage For="@(() => asociaciones.Celular)" />
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label>Correo Electronico:</label>
+        <div>
+            <InputText width="10" @bind-Value="asociaciones.CorreoElectronico"></InputText>
+            <ValidationMessage For="@(() => asociaciones.CorreoElectronico)" />
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label>Representación Juridica:</label>
+        <div>
+            <InputText width="10" @bind-Value="asociaciones.RepresentacionJuridica"></InputText>
+            <ValidationMessage For="@(() => asociaciones.RepresentacionJuridica)" />
+        </div>
+    </div>
+
+ 
+
+
+
+
+    <button class="btn btn-primary" type="submit"><i class="bi bi-floppy" />  Guardar Cambios</button>
+    <button class="btn btn-info" type="reset"><i class="bi bi-x-circle" />Limpiar</button>
+    <button class="btn btn-success" @onclick="ReturnAction"><i class="bi bi-arrow-left" />Regresar</button>
+</EditForm>
+
+@code {
+
+    private EditContext editContext = null!;
+    protected override void OnInitialized()
+    {
+        editContext = new(asociaciones);
+    }
+
+
+
+    [Parameter]
+    [EditorRequired]
+    public Asociacion asociaciones { get; set; } = null!;
+
+    [Parameter]
+    [EditorRequired]
+    public EventCallback OnValidSubmit { get; set; }
+
+
+    [EditorRequired]
+    [Parameter]
+    public EventCallback ReturnAction { get; set; }
+
+    public bool FormularioPosteadoConExito { get; set; } = false;
+
+
+
+    private async Task OnBeforeInternalNavigation(LocationChangingContext context)
+    {
+        var formularioFueEditado = editContext.IsModified();
+
+        if (!formularioFueEditado)
+        {
+            return;
+        }
+
+        if (FormularioPosteadoConExito)
+        {
+            return;
+        }
+
+        var resultado = await swal.FireAsync(new SweetAlertOptions
+            {
+                Title = "Confirmación",
+                Text = "¿Deseas abandonar la página y perder los cambios?",
+                Icon = SweetAlertIcon.Warning,
+                ShowCancelButton = true
+            });
+
+        var confirmado = !string.IsNullOrEmpty(resultado.Value);
+
+        if (confirmado)
+        {
+            return;
+        }
+
+        context.PreventNavigation();
+    }
+}
