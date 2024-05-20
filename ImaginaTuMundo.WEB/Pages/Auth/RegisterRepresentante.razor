@@ -1,4 +1,4 @@
-﻿@page "/RegisterMadre"
+﻿@page "/RegisterRepresentante"
 @using ImaginaTuMundo.Shared.DTOs;
 @using ImaginaTuMundo.Shared.Enums;
 @using ImaginaTuMundo.WEB.AuthenticationProviders;
@@ -109,7 +109,7 @@
     private async Task CreateUserAsync()
     {
         userDTO.UserName = userDTO.Email;
-        userDTO.UserType = UserType.Madre;
+        userDTO.UserType = UserType.Representante;
         var responseHttp = await repository.PostAsync<UserDTO, TokenDTO>("/api/accounts/CreateUser", userDTO);
         if (responseHttp.Error)
         {
