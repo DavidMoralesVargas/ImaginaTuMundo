@@ -1,6 +1,7 @@
-﻿<AuthorizeView>
+﻿
+<AuthorizeView>
     <Authorized>
-        <span>Hola, @context.User.Identity.Name</span>
+        <span>Hola, @context.User.Identity!.Name</span>
         @if (!string.IsNullOrEmpty(photoUser))
         {
             <div class="mx-2">
@@ -32,4 +33,3 @@
         }
     }
 }
-
