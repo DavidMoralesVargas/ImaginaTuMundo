@@ -1,4 +1,7 @@
 using ImaginaTuMundo.API.Data;
+using ImaginaTuMundo.API.Helpers;
+using ImaginaTuMundo.Shared.Entidades;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,9 +13,40 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddIdentity<User, IdentityRole>(x =>
+{
+    x.User.RequireUniqueEmail = true;
+    x.Password.RequireDigit = false;
+    x.Password.RequiredUniqueChars = 6;
+    x.Password.RequireUppercase = false;
+    x.Password.RequireLowercase = false;
+
+    x.Password.RequireNonAlphanumeric = false;
+})
+.AddEntityFrameworkStores<DataContext>()
+.AddDefaultTokenProviders();
+
+builder.Services.AddScoped<IUserHelper, UserHelper>();
+
+builder.Services.AddTransient<SeedDb>();
+
+
 builder.Services.AddDbContext<DataContext>(x => x.UseSqlServer("name=DefaultConnection"));
 
 var app = builder.Build();
+
+SeedData(app);
+static void SeedData(WebApplication app)
+{
+    var scopedFactory = app.Services.GetService<IServiceScopeFactory>();
+
+    using (var scope = scopedFactory!.CreateScope())
+    {
+        var service = scope.ServiceProvider.GetService<SeedDb>();
+        service!.SeedAsync().Wait();
+    }
+
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
