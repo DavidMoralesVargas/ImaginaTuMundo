@@ -1,4 +1,5 @@
 ﻿@page "/RegisterMadre"
+@using ImaginaTuMundo.WEB.Shared;
 @using ImaginaTuMundo.Shared.DTOs;
 @using ImaginaTuMundo.Shared.Enums;
 @using ImaginaTuMundo.WEB.AuthenticationProviders;
@@ -67,15 +68,6 @@
                         </div>
                     </div>
 
-
-
-                    <div class="mb-3">
-                        <label>Foto:</label>
-                        <div>
-                            <InputText width="10" @bind-Value="@userDTO.Foto" />
-                            <ValidationMessage For="@(() => userDTO.Foto)" />
-                        </div>
-                    </div>
                     <div class="mb-3">
                         <label>Contraseña:</label>
                         <div>
@@ -91,6 +83,10 @@
                         </div>
                     </div>
 
+                    <div class="mb-3">
+                        <InputImg Label="Foto" ImageSelected="ImageSelected" ImageURL="@imageUrl" />
+                    </div>
+
 
 
                 </div>
@@ -103,8 +99,18 @@
 </EditForm>
 @code {
     private UserDTO userDTO = new();
+    private string imageUrl;
 
+    protected override async Task OnInitializedAsync()
+    {
+        await CreateUserAsync();
 
+        if (!string.IsNullOrEmpty(userDTO.Foto))
+        {
+            imageUrl = userDTO.Foto;
+            userDTO.Foto = null;
+        }
+    }
 
     private async Task CreateUserAsync()
     {
@@ -121,4 +127,12 @@
         await loginService.LoginAsync(responseHttp.Response!.Token);
         navigationManager.NavigateTo("/");
     }
+
+
+    private void ImageSelected(string imagenBase64)
+    {
+        userDTO.Foto = imagenBase64;
+        imageUrl = null;
+    }
+
 }

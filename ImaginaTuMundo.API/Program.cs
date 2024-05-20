@@ -65,6 +65,8 @@ builder.Services.AddIdentity<User, IdentityRole>(x =>
 
 builder.Services.AddScoped<IUserHelper, UserHelper>();
 
+builder.Services.AddScoped<IFileStorage, FileStorage>();
+
 builder.Services.AddTransient<SeedDb>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
