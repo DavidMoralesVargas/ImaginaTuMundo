@@ -1,4 +1,5 @@
 ﻿
+using ImaginaTuMundo.Shared.DTOs;
 using ImaginaTuMundo.Shared.Entidades;
 using Microsoft.AspNetCore.Identity;
 
@@ -15,6 +16,10 @@ namespace ImaginaTuMundo.API.Helpers
         Task AddUserToRoleAsync(User user, string roleName);
 
         Task<bool> IsUserInRoleAsync(User user, string roleName);
+
+        Task<SignInResult> LoginAsync(LoginDTO model);
+
+        Task LogoutAsync();
 
 
     }

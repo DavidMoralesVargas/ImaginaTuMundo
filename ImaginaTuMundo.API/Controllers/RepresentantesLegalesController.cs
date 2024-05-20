@@ -1,11 +1,14 @@
 ﻿using ImaginaTuMundo.API.Data;
 using ImaginaTuMundo.Shared.Entidades;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace ImaginaTuMundo.API.Controllers
 {
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Route("/api/RepresentantesLegalesController")]
     public class RepresentantesLegalesController : ControllerBase
     {

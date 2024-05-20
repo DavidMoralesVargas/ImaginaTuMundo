@@ -14,7 +14,7 @@ namespace ImaginaTuMundo.WEB.AuthenticationProviders
             new Claim("Nombre", "Super"),
             new Claim("Apellido", "Admin"),
             new Claim(ClaimTypes.Name, "dacanad@gnmail.com"),
-            new Claim(ClaimTypes.Role, "f")
+            new Claim(ClaimTypes.Role, "Admin")
         },
         authenticationType: "test");
 
