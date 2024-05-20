@@ -1,7 +1,133 @@
 ﻿@page "/Register"
 
-<h3>Ingrese que usuario desea registrar</h3>
+<div class="register-page">
+    <div class="container mt-5">
+        <div class="text-center mb-4">
+            <h1>Registro de Usuarios</h1>
+            <p>Seleccione el tipo de usuario que desea registrar</p>
+        </div>
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <div class="card text-center shadow-sm">
+                    <div class="card-body">
+                        <div class="icon-container">
+                            <div class="icon icon-madre"></div>
+                        </div>
+                        <h5 class="card-title">Madre Comunitaria</h5>
+                        <p class="card-text">Registrar a una madre comunitaria.</p>
+                        <a class="btn btn-primary btn-lg" href="RegisterMadre">Registrar</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card text-center shadow-sm">
+                    <div class="card-body">
+                        <div class="icon-container">
+                            <div class="icon icon-representante"></div>
+                        </div>
+                        <h5 class="card-title">Representante Legal</h5>
+                        <p class="card-text">Registrar a un representante legal.</p>
+                        <a class="btn btn-primary btn-lg" href="RegisterRepresentante">Registrar</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card text-center shadow-sm">
+                    <div class="card-body">
+                        <div class="icon-container">
+                            <div class="icon icon-icbf"></div>
+                        </div>
+                        <h5 class="card-title">Usuario ICBF</h5>
+                        <p class="card-text">Registrar a un usuario de ICBF.</p>
+                        <a class="btn btn-primary btn-lg" href="RegisterICBF">Registrar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-<a class="btn btn-primary" href="RegisterMadre">Madre Comunitaria</a>
-<a class="btn btn-primary" href="RegisterRepresentante">Representante Legal</a>
-<a class="btn btn-primary" href="RegisterICBF">Usuario ICBF</a>
+<style>
+    .register-page {
+        background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .container {
+        background-color: #ffffff;
+        padding: 2rem;
+        border-radius: 15px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+        font-size: 2.5rem;
+        font-weight: bold;
+        color: #fff;
+    }
+
+    p {
+        color: #e0e0e0;
+    }
+
+    .card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 0 25px rgba(0, 0, 0, 0.2);
+        }
+
+    .card-title {
+        color: #007bff;
+        margin-bottom: 15px;
+    }
+
+    .card-text {
+        color: #666666;
+    }
+
+    .btn {
+        margin-top: 10px;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+        .btn:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
+
+    .icon-container {
+        margin-bottom: 15px;
+    }
+
+    .icon {
+        width: 50px;
+        height: 50px;
+        background-color: #007bff;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        font-size: 24px;
+        margin: 0 auto;
+    }
+
+    .icon-madre::before {
+        content: "\1F469";
+    }
+
+    .icon-representante::before {
+        content: "\1F464";
+    }
+
+    .icon-icbf::before {
+        content: "\1F4BB";
+    }
+</style>
