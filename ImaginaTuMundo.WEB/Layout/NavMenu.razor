@@ -18,7 +18,7 @@
         </div>
 
 
-        <AuthorizeView Roles="Admin">
+        <AuthorizeView Roles="Admin,Madre">
             <Authorized>
 
         <div class="nav-item px-3">
@@ -41,7 +41,7 @@
             </Authorized>
         </AuthorizeView>
 
-        <AuthorizeView Roles="Admin">
+        <AuthorizeView Roles="Admin,Representante">
             <Authorized>
 
         <div class="nav-item px-3">
@@ -51,7 +51,7 @@
         </div>
             </Authorized>
         </AuthorizeView>
-        <AuthorizeView Roles="Admin">
+        <AuthorizeView Roles="Admin,ICBF">
             <Authorized>
         <div class="nav-item px-3">
             <NavLink class="nav-link" href="ninos" Match="NavLinkMatch.All">
@@ -61,7 +61,7 @@
             </Authorized>
         </AuthorizeView>
 
-         <AuthorizeView Roles="Admin">
+         <AuthorizeView Roles="Admin,ICBF">
             <Authorized>
         <div class="nav-item px-3">
             <NavLink class="nav-link" href="icbf" Match="NavLinkMatch.All">
@@ -71,7 +71,7 @@
             </Authorized>
         </AuthorizeView>
 
-        <AuthorizeView Roles="Admin">
+        <AuthorizeView Roles="Admin,ICBF,Representante">
             <Authorized>
         <div class="nav-item px-3">
             <NavLink class="nav-link" href="tareasmadres" Match="NavLinkMatch.All">
@@ -80,7 +80,7 @@
         </div>
             </Authorized>
         </AuthorizeView>
-        <AuthorizeView Roles="Admin">
+        <AuthorizeView Roles="Admin,Madre,Representante">
             <Authorized>
         <div class="nav-item px-3">
             <NavLink class="nav-link" href="evidencia" Match="NavLinkMatch.All">
@@ -89,7 +89,7 @@
         </div>
             </Authorized>
         </AuthorizeView>
-         <AuthorizeView Roles="Admin">
+         <AuthorizeView Roles="Admin,ICBF">
             <Authorized>
         <div class="nav-item px-3">
             <NavLink class="nav-link" href="inscripcion" Match="NavLinkMatch.All">
@@ -98,7 +98,7 @@
         </div>
             </Authorized>
         </AuthorizeView>
-         <AuthorizeView Roles="Admin">
+         <AuthorizeView Roles="Admin,ICBF,Madre">
             <Authorized>
         <div class="nav-item px-3">
             <NavLink class="nav-link" href="asignacionmadre" Match="NavLinkMatch.All">
@@ -107,7 +107,7 @@
         </div>
             </Authorized>
         </AuthorizeView>
-        <AuthorizeView Roles="Admin">
+        <AuthorizeView Roles="Admin,Representante,ICBF">
             <Authorized>
         <div class="nav-item px-3">
             <NavLink class="nav-link" href="seguimiento" Match="NavLinkMatch.All">
