@@ -1,8 +1,8 @@
 ﻿
 <AuthorizeView>
     <Authorized>
-        Hola, <a href="EditUser" class="nav-link btn btn-link" >@context.User.Identity!.Name</a>
-        @if (string.IsNullOrEmpty(photoUser))
+        <span>Hola, <a href="EditUser" class="nav-link btn btn-link" >@context.User.Identity.Name</a></span>
+        @if (!string.IsNullOrEmpty(photoUser))
         {
             <div class="mx-2">
                 <img src="@photoUser" width="50" height="50" style="border-radius:50%" />
@@ -26,7 +26,7 @@
     {
         var authenticationState = await authenticationStateTask;
         var claims = authenticationState.User.Claims.ToList();
-        var photoClaim = claims.FirstOrDefault(x => x.Type == "Photo");
+        var photoClaim = claims.FirstOrDefault(x => x.Type == "Foto");
         if (photoClaim is not null)
         {
             photoUser = photoClaim.Value;

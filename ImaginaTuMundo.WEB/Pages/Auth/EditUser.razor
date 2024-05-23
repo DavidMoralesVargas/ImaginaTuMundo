@@ -4,7 +4,7 @@
 @using ImaginaTuMundo.Shared.Enums;
 @using ImaginaTuMundo.WEB.AuthenticationProviders;
 @using ImaginaTuMundo.WEB.Services
-@using ImaginaTuMundo.Shared
+@using ImaginaTuMundo.Shared;
 @inject IRepository repository
 @inject SweetAlertService sweetAlertService
 @inject NavigationManager navigationManager
@@ -86,7 +86,6 @@ else
     protected override async Task OnInitializedAsync()
     {
         await LoadUserAsyc();
-        await LoadMadresAsync();
 
         if (!string.IsNullOrEmpty(user!.Foto))
         {
@@ -122,18 +121,6 @@ else
 
 
 
-    private async Task LoadMadresAsync()
-    {
-        var responseHttp = await repository.GetAsync<List<MadreComunitaria>>("/api/MadresComunitariasController/combo");
-        if (responseHttp.Error)
-        {
-            var message = await responseHttp.GetErrorMessageAsync();
-            await sweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
-            return;
-        }
-
-        madreComunitarias = responseHttp.Response;
-    }
 
 
     private async Task SaveUserAsync()
