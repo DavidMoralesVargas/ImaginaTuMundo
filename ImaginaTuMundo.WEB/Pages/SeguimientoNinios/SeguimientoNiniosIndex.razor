@@ -11,15 +11,15 @@
 
 <div class="card">
     <div class="card-header">
-         <AuthorizeView Roles="Admin">
-            <Authorized>
         <span>
             <h1>SEGUIMIENTOS</h1>
+         <AuthorizeView Roles="Admin,Representate">
+            <Authorized>
+        
             <a class="btn btn-primary btn-sm float-end" href="/seguimiento/create"><i class="bi bi-plus-circle" />Nuevo seguimiento</a>
-
-        </span>
         </Authorized>
         </AuthorizeView>
+        </span>
     </div>
 
     <div class="card-body">
@@ -81,11 +81,14 @@
                                     @item.MadreComunitariaId
                                 </td>
 
-
-                                <td>
-                                    <a href="/seguimiento/edit/@item.Id" class="btn btn-sm btn-warning"><i class="bi bi-pencil-square" /> Editar</a>
-                                    <button @onclick=@(() => DeleteAsycn(item)) class="btn btn-sm btn-danger"><i class="bi bi-trash-fill" /> Borrar</button>
-                                </td>
+                                <AuthorizeView Roles="Admin,Representate">
+                                <Authorized>
+                                    <td>
+                                        <a href="/seguimiento/edit/@item.Id" class="btn btn-sm btn-warning"><i class="bi bi-pencil-square" /> Editar</a>
+                                        <button @onclick=@(() => DeleteAsycn(item)) class="btn btn-sm btn-danger"><i class="bi bi-trash-fill" /> Borrar</button>
+                                    </td>
+                                </Authorized>
+                                </AuthorizeView>
                             </tr>
                         }
                     </tbody>
