@@ -8,6 +8,9 @@
 @inject IRepository repository
 @inject SweetAlertService sweetAlertService
 @using CurrieTechnologies.Razor.SweetAlert2
+
+<PageTitle>Crear tarea</PageTitle>
+
 <h3>Crear</h3>
 
 <TareasParaMadresForm @ref="tareasParaMadresForm" tareaParaMadre="tareaParaMadre" OnValidSubmit="Create" ReturnAction="Return" />

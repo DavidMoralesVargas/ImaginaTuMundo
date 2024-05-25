@@ -7,6 +7,9 @@
 @inject IRepository repository
 @inject SweetAlertService sweetAlertService
 @using CurrieTechnologies.Razor.SweetAlert2
+
+<PageTitle>Crear Asociación</PageTitle>
+
 <h3>Crear</h3>
 
 <AsociacionForm @ref="asociacionForm" asociaciones="asociacion" OnValidSubmit="Create" ReturnAction="Return" />

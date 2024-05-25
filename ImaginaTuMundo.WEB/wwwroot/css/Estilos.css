@@ -10,7 +10,7 @@ main[b-tqavhh74d8] {
 }
 
 .sidebar[b-tqavhh74d8] {
-    background: linear-gradient(to right, #388e3c, #689f38, #afb42b, #fbc02d, #fdd835, #c0ca33, #8bc34a);
+    background: linear-gradient(to right, #0d47a1, #33691e, #fbc02d, #004d40);
     /* Eliminar los bordes */
     border: none;
     border-radius: 0; /* Hacer los bordes completamente cuadrados */
@@ -19,8 +19,7 @@ main[b-tqavhh74d8] {
     color: #000000; /* Letras de color negro */
     font-size: 14px;
     font-weight: normal;
-
-    width:500px;
+    width: 500px;
 }
 
 .top-row[b-tqavhh74d8] {

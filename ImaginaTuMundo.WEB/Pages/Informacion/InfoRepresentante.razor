@@ -1,0 +1,76 @@
+﻿@page "/InfoRepresentante"
+@inject NavigationManager NavigationManager
+
+<PageTitle>Información sobre Representantes Legales</PageTitle>
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <h2 class="text-center mb-4">Representantes Legales</h2>
+            <!-- Contenido de la página -->
+            <p>Los representantes legales desempeñan un papel fundamental en el apoyo a las familias y en el cumplimiento de los requisitos legales en el ámbito de la educación infantil. Son responsables de...</p>
+            <p>Además, los representantes legales colaboran estrechamente con las madres comunitarias y otros profesionales para garantizar el bienestar de los niños y el éxito en su desarrollo.</p>
+            <p>Entre las responsabilidades de los representantes legales se encuentran:</p>
+            <ul>
+                <li>Garantizar el cumplimiento de las normativas legales y los requisitos de licencia.</li>
+                <li>Proporcionar apoyo y orientación a las familias en cuestiones legales y administrativas.</li>
+                <li>Colaborar con las autoridades educativas y otros organismos para asegurar el acceso a los recursos necesarios.</li>
+                <li>Participar en reuniones y procesos de toma de decisiones relacionados con el cuidado y la educación de los niños.</li>
+                <li>Mantener registros precisos y completos de la documentación legal y administrativa.</li>
+                <li>Representar los intereses de los niños y las familias en cualquier asunto legal o administrativo.</li>
+            </ul>
+            <p>Estos son solo algunos ejemplos de las responsabilidades que pueden asumir los representantes legales. Su papel es crucial para garantizar un entorno seguro y enriquecedor para los niños en edad preescolar.</p>
+            <p>Los representantes legales también juegan un papel importante en la promoción de prácticas de crianza positivas y en el fomento de la participación de las familias en la educación de sus hijos. Colaboran con las madres comunitarias y otros profesionales para...</p>
+            <p>Para obtener más información sobre los representantes legales y su función en Imagina Tu Mundo, no dudes en ponerte en contacto con nosotros.</p>
+        </div>
+    </div>
+</div>
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8 offset-md-2 text-center">
+            <button class="btn btn-primary" @onclick="NavigateToHomePage">Regresar a la página principal</button>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Estilos CSS */
+    body {
+        background-color: #f7f7f7;
+        font-family: Arial, sans-serif;
+    }
+
+    h2 {
+        color: #333;
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    p, ul {
+        color: #666;
+        line-height: 1.6;
+    }
+
+    ul {
+        margin-left: 20px;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+        margin-top: 30px;
+    }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+</style>
+
+@code {
+    private void NavigateToHomePage()
+    {
+        NavigationManager.NavigateTo("/");
+    }
+}

@@ -1,0 +1,79 @@
+﻿@page "/InfoImaginaTuMundo"
+@inject NavigationManager NavigationManager
+
+<PageTitle>Corporación Imagina Tu Mundo</PageTitle>
+
+<div class="container">
+    <h1>Corporación Imagina Tu Mundo</h1>
+    <p>La Corporación Imagina Tu Mundo es una organización comprometida con el desarrollo integral de la educación infantil en Colombia. Desde su fundación, se ha dedicado a proporcionar un entorno educativo estimulante y seguro para los niños en edad preescolar.</p>
+    <p>Nuestro enfoque único en el desarrollo integral de los niños les ayuda a crecer y prosperar en un ambiente acogedor y centrado en el aprendizaje. Trabajamos en estrecha colaboración con madres comunitarias, representantes legales y diversas instituciones para garantizar el acceso a una educación de calidad para todos los niños.</p>
+    <p>Además de ofrecer programas educativos, la Corporación Imagina Tu Mundo se compromete activamente con la comunidad, organizando eventos y actividades que promueven la participación de las familias y fortalecen los lazos entre la comunidad educativa.</p>
+</div>
+
+<div class="container mt-5">
+    <h2>Nuestra Filosofía</h2>
+    <p>Es un compromiso diario con nuestra calidad de vida, partimos de una postura sencilla de servicio, dedicamos nuestro tiempo y talento en crear y mejorar servicios que contribuyan a una mejor sociedad.</p>
+    <p>Queremos promover una cultura corporativa que busque tener nuevos retos en la atención de circunstancias que se viven día a día, buscamos una corporación abierta y saludable en la cual un equipo dinámico de profesionales presente nuevas formas de servicio y atención a nuestros usuarios y clientes, buscando favorecer una mejor sociedad.</p>
+</div>
+
+<div class="container mt-5">
+    <h2>Valores Corporativos</h2>
+    <ul>
+        <li><strong>Servicio:</strong> Nuestro mayor compromiso es el Servicio, dirigido a todas las esferas de la comunidad de manera espontáneo en los detalles más mínimos, y habla de nuestro alto sentido de colaboración.</li>
+        <li><strong>Lealtad:</strong> Trabajar día a día de manera ética es la base de nuestro objetivo. Todo lo que hacemos se guía por el sentido moral que garantiza la equidad, el respeto por todos los actores involucrados y una completa transparencia.</li>
+        <li><strong>Equidad:</strong> En Imagina Tu Mundo la equidad se ve reflejada en la justicia e igualdad social con responsabilidad y valoración de la individualidad, llegando a un equilibrio entre lo social.</li>
+        <li><strong>Eficiencia:</strong> Lo que hacemos en la Corporación Imagina Tu Mundo, está motivado por una incesante pasión por la excelencia y un incansable compromiso de desarrollar los mejores servicios.</li>
+    </ul>
+</div>
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8 offset-md-2 text-center">
+            <button class="btn btn-primary" @onclick="NavigateToHomePage">Regresar a la página principal</button>
+        </div>
+    </div>
+</div>
+
+<style>
+    .container {
+        margin-top: 20px;
+    }
+
+    h1 {
+        color: #333;
+    }
+
+    h2 {
+        color: #007bff;
+        margin-top: 40px;
+    }
+
+    p {
+        color: #666;
+        line-height: 1.6;
+    }
+
+    ul {
+        list-style-type: none;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+        color: #fff;
+        padding: 10px 20px;
+        text-decoration: none;
+    }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+</style>
+
+@code {
+    private void NavigateToHomePage()
+    {
+        NavigationManager.NavigateTo("/");
+    }
+}

@@ -8,6 +8,9 @@
 @inject IRepository repository
 @inject SweetAlertService sweetAlertService
 @using CurrieTechnologies.Razor.SweetAlert2
+
+<PageTitle>Crear Madre</PageTitle>
+
 <h3>Crear</h3>
 
 <MadreComunitariaForm @ref="madreComunitariaForm" madreComunitaria="madreComunitaria" OnValidSubmit="Create" ReturnAction="Return" />

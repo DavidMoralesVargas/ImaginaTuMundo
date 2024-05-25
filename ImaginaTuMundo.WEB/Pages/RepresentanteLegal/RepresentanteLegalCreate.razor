@@ -7,6 +7,9 @@
 @inject IRepository repository
 @inject SweetAlertService sweetAlertService
 @using CurrieTechnologies.Razor.SweetAlert2
+
+<PageTitle>Crear representante</PageTitle>
+
 <h3>Crear</h3>
 
 <RepresentanteLegalForm @ref="representanteLegalForm" representanteLegal="representanteLegal" OnValidSubmit="Create" ReturnAction="Return" />

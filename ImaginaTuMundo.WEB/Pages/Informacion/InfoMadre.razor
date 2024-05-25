@@ -1,0 +1,90 @@
+﻿@page "/InfoMadre"
+
+@inject NavigationManager NavigationManager
+
+<PageTitle>Información sobre Madres Comunitarias</PageTitle>
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <h2 class="text-center mb-4">Madres Comunitarias</h2>
+            <p>Las madres comunitarias son piezas fundamentales en el sistema de cuidado infantil y desarrollo temprano en muchas comunidades. Su dedicación y compromiso contribuyen en gran medida al bienestar y desarrollo de los niños a una edad temprana.</p>
+            <p>En nuestra organización, reconocemos y valoramos profundamente el papel de las madres comunitarias. Aquí hay más información sobre su trabajo y su importancia en nuestra comunidad:</p>
+
+            <h3 class="mt-5">¿Quiénes son las madres comunitarias?</h3>
+            <p>Las madres comunitarias son mujeres que brindan cuidado y educación a los niños en edad preescolar en un entorno hogareño. Generalmente, son miembros respetados de la comunidad que se dedican a esta labor con pasión y compromiso.</p>
+
+            <h3 class="mt-5">Funciones de las madres comunitarias</h3>
+            <p>Las responsabilidades de una madre comunitaria pueden variar según las necesidades específicas de la comunidad y el programa en el que estén involucradas. Sin embargo, algunas de sus funciones comunes incluyen:</p>
+            <ul>
+                <li>Proporcionar cuidado y atención amorosos a los niños.</li>
+                <li>Crear un ambiente seguro y estimulante para el desarrollo infantil.</li>
+                <li>Planificar y llevar a cabo actividades educativas y recreativas.</li>
+                <li>Seguimiento del crecimiento y desarrollo de cada niño.</li>
+                <li>Colaborar con las familias para brindar apoyo y orientación en temas de crianza y desarrollo infantil.</li>
+                <li>Mantener registros precisos de la asistencia y el progreso de los niños.</li>
+            </ul>
+
+            <h3 class="mt-5">Importancia de las madres comunitarias</h3>
+            <p>Las madres comunitarias desempeñan un papel vital en el cuidado y educación de los niños en sus primeros años de vida. Algunas de las razones por las que su trabajo es tan importante incluyen:</p>
+            <ul>
+                <li>Acceso a cuidado de calidad en un entorno familiar y cercano a casa.</li>
+                <li>Desarrollo integral de los niños, incluyendo aspectos físicos, cognitivos, emocionales y sociales.</li>
+                <li>Apoyo y orientación para las familias en temas de crianza y desarrollo infantil.</li>
+                <li>Fortalecimiento de los lazos comunitarios y la colaboración entre vecinos.</li>
+                <li>Contribución al desarrollo económico y social de la comunidad al brindar oportunidades de empleo y empoderamiento a las mujeres.</li>
+            </ul>
+
+            <h3 class="mt-5">Apoyo a las madres comunitarias</h3>
+            <p>En nuestra organización, nos comprometemos a brindar todo el apoyo necesario a las madres comunitarias para que puedan desempeñar su labor de manera efectiva y satisfactoria. Algunas de las formas en que apoyamos a las madres comunitarias incluyen:</p>
+            <ul>
+                <li>Formación y capacitación continua en cuidado infantil y desarrollo temprano.</li>
+                <li>Recursos y materiales educativos para enriquecer el ambiente de aprendizaje de los niños.</li>
+                <li>Asesoramiento y orientación en aspectos relacionados con la crianza y la gestión del cuidado infantil.</li>
+                <li>Reconocimiento y aprecio por su arduo trabajo y dedicación.</li>
+            </ul>
+
+            <p>En resumen, las madres comunitarias son agentes de cambio en nuestras comunidades, proporcionando un cuidado amoroso y educación de calidad a los niños en edad preescolar y contribuyendo al bienestar y desarrollo de las futuras generaciones.</p>
+        </div>
+    </div>
+</div>
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8 offset-md-2 text-center">
+            <button class="btn btn-primary" @onclick="NavigateToHomePage">Regresar a la página principal</button>
+        </div>
+    </div>
+</div>
+
+<style>
+    body {
+        background-color: #f7f7f7;
+        font-family: Arial, sans-serif;
+        color: #333;
+    }
+
+    h2, h3 {
+        color: #007bff;
+    }
+
+    p {
+        line-height: 1.6;
+    }
+
+    ul {
+        list-style-type: disc;
+        margin-left: 20px;
+    }
+
+    .container {
+        max-width: 800px;
+    }
+</style>
+
+@code {
+    private void NavigateToHomePage()
+    {
+        NavigationManager.NavigateTo("/");
+    }
+}
