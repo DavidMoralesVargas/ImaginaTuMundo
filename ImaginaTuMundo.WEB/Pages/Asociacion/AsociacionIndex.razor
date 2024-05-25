@@ -12,8 +12,11 @@
     <div class="card-header">
         <span>
             <h1>ASOCIACIONES</h1>
-            <a class="btn btn-primary btn-sm float-end" href="/asociacion/create"><i class="bi bi-plus-circle" />Nueva Asociación</a>
-
+            <AuthorizeView Roles="Admin">
+            <Authorized>
+                <a class="btn btn-primary btn-sm float-end" href="/asociacion/create"><i class="bi bi-plus-circle" />Nueva Asociación</a>
+                </Authorized>
+            </AuthorizeView>
         </span>
     </div>
 
@@ -70,8 +73,12 @@
 
 
                                 <td>
-                                    <a href="/asociacion/edit/@item.Id" class="btn btn-sm btn-warning"><i class="bi bi-pencil-square" /> Editar</a>
-                                    <button @onclick=@(() => DeleteAsycn(item)) class="btn btn-sm btn-danger"><i class="bi bi-trash-fill" /> Borrar</button>
+                                    <AuthorizeView Roles="Admin">
+                                        <Authorized>
+                                            <a href="/asociacion/edit/@item.Id" class="btn btn-sm btn-warning"><i class="bi bi-pencil-square" /> Editar</a>
+                                            <button @onclick=@(() => DeleteAsycn(item)) class="btn btn-sm btn-danger"><i class="bi bi-trash-fill" /> Borrar</button>
+                                        </Authorized>
+                                    </AuthorizeView>
                                 </td>
                             </tr>
                         }

@@ -13,7 +13,12 @@
     <div class="card-header">
         <span>
             <h1>EVIDENCIAS</h1>
-            <a class="btn btn-primary btn-sm float-end" href="/evidencia/create"><i class="bi bi-plus-circle" />Nueva evidencia</a>
+            <AuthorizeView Roles="Admin,Madre">
+                <Authorized>
+                    <a class="btn btn-primary btn-sm float-end" href="/evidencia/create"><i class="bi bi-plus-circle" />Nueva evidencia</a>
+                </Authorized>
+            </AuthorizeView>
+            
 
         </span>
     </div>
@@ -80,8 +85,13 @@
 
 
                                 <td>
-                                    <a href="/evidencia/edit/@item.Id" class="btn btn-sm btn-warning"><i class="bi bi-pencil-square" /> Editar</a>
-                                    <button @onclick=@(() => DeleteAsycn(item)) class="btn btn-sm btn-danger"><i class="bi bi-trash-fill" /> Borrar</button>
+                                    <AuthorizeView Roles="Admin,Madre">
+                                        <Authorized>
+                                            <a href="/evidencia/edit/@item.Id" class="btn btn-sm btn-warning"><i class="bi bi-pencil-square" /> Editar</a>
+                                            <button @onclick=@(() => DeleteAsycn(item)) class="btn btn-sm btn-danger"><i class="bi bi-trash-fill" /> Borrar</button>
+                                        </Authorized>
+                                    </AuthorizeView>
+                                    
                                 </td>
                             </tr>
                         }

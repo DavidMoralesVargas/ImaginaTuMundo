@@ -13,8 +13,12 @@
     <div class="card-header">
         <span>
             <h1>TAREAS PARA MADRES</h1>
-            <a class="btn btn-primary btn-sm float-end" href="/tareasmadres/create"><i class="bi bi-plus-circle" />Nueva tarea</a>
-
+            <AuthorizeView Roles="Admin,ICBF">
+                <Authorized>
+                    <a class="btn btn-primary btn-sm float-end" href="/tareasmadres/create"><i class="bi bi-plus-circle" />Nueva tarea</a>
+                </Authorized>
+            </AuthorizeView>
+           
         </span>
     </div>
 
@@ -75,8 +79,13 @@
 
 
                                 <td>
-                                    <a href="/tareasmadres/edit/@item.Id" class="btn btn-sm btn-warning"><i class="bi bi-pencil-square" /> Editar</a>
-                                    <button @onclick=@(() => DeleteAsycn(item)) class="btn btn-sm btn-danger"><i class="bi bi-trash-fill" /> Borrar</button>
+                                    <AuthorizeView Roles="Admin,ICBF">
+                                        <Authorized>
+                                            <a href="/tareasmadres/edit/@item.Id" class="btn btn-sm btn-warning"><i class="bi bi-pencil-square" /> Editar</a>
+                                            <button @onclick=@(() => DeleteAsycn(item)) class="btn btn-sm btn-danger"><i class="bi bi-trash-fill" /> Borrar</button>
+                                        </Authorized>
+                                    </AuthorizeView>
+                                   
                                 </td>
                             </tr>
                         }
