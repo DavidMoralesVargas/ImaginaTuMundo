@@ -1,7 +1,7 @@
 ﻿@page "/Login"
 @using ImaginaTuMundo.Shared.DTOs;
 @using ImaginaTuMundo.WEB.AuthenticationProviders;
-@using ImaginaTuMundo.WEB.Services
+@using ImaginaTuMundo.WEB.Services;
 @inject IRepository repository
 @inject SweetAlertService sweetAlertService
 @inject NavigationManager navigationManager
@@ -39,6 +39,7 @@
         </div>
         <div class="card-footer">
             <a class="btn btn-link" href="/ResendToken">Reenviar correo de activación de cuenta</a>
+            <p><a class="bbtn btn-link" href="/RecoverPassword">¿Has olvidado tu contraseña?</a></p>
         </div>
     </div>
 </EditForm>
