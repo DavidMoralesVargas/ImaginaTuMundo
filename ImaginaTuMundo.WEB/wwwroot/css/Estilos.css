@@ -10,23 +10,32 @@ main[b-tqavhh74d8] {
 }
 
 .sidebar[b-tqavhh74d8] {
-    background: linear-gradient(to right, #3949ab, #1976d2, #00acc1, #00bcd4, #26c6da, #4dd0e1, #80deea);
-    border: 1px solid #333333;
-    border-radius: 10px;
+    background: linear-gradient(to right, #388e3c, #689f38, #afb42b, #fbc02d, #fdd835, #c0ca33, #8bc34a);
+    /* Eliminar los bordes */
+    border: none;
+    border-radius: 0; /* Hacer los bordes completamente cuadrados */
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
     padding: 15px;
-    color: #333333;
+    color: #000000; /* Letras de color negro */
     font-size: 14px;
     font-weight: normal;
+
+    width:500px;
 }
 
 .top-row[b-tqavhh74d8] {
     background-color: #f7f7f7;
     border-bottom: 1px solid #d6d5d5;
     justify-content: flex-end;
-    height: 3.5rem;
+    /* Aumentar la altura aquí */
+    height: 6rem;
     display: flex;
     align-items: center;
+}
+
+.top-row[b-tqavhh74d8] {
+    /* Reducir el tamaño de la barra de arriba */
+    height: 4rem; /* Puedes ajustar este valor según tus necesidades */
 }
 
     .top-row[b-tqavhh74d8]  a, .top-row[b-tqavhh74d8]  .btn-link {
@@ -89,7 +98,7 @@ main[b-tqavhh74d8] {
 }
 
 .top-row[b-mf6vbztdo0] {
-    height: 3.5rem;
+    height: 4.5rem; /* Aumentar la altura aquí también */
     background-color: rgba(0,0,0,0.4);
 }
 
@@ -120,8 +129,7 @@ main[b-tqavhh74d8] {
 }
 
 .nav-item[b-mf6vbztdo0] {
-    font-size: 0.9rem;
-    padding-bottom: 0.5rem;
+    color: #000000;
 }
 
     .nav-item:first-of-type[b-mf6vbztdo0] {
@@ -132,14 +140,10 @@ main[b-tqavhh74d8] {
         padding-bottom: 1rem;
     }
 
-    .nav-item[b-mf6vbztdo0]  a {
-        color: #d7d7d7;
-        border-radius: 4px;
-        height: 3rem;
-        display: flex;
-        align-items: center;
-        line-height: 3rem;
-    }
+.nav-item[b-mf6vbztdo0] a {
+    color: black; /* Cambiar el color del texto a negro */
+    font-size: 1rem; /* Aumentar el tamaño de la fuente */
+}
 
 .nav-item[b-mf6vbztdo0]  a.active {
     background-color: rgba(255,255,255,0.37);
@@ -149,6 +153,15 @@ main[b-tqavhh74d8] {
 .nav-item[b-mf6vbztdo0]  a:hover {
     background-color: rgba(255,255,255,0.1);
     color: white;
+}
+
+.nav-item[b-mf6vbztdo0] {
+    margin-bottom: 20px; /* Puedes ajustar este valor según sea necesario */
+}
+
+/* Aumentar el tamaño entre las opciones de la barra de la izquierda */
+.nav-item[b-mf6vbztdo0] {
+    margin-bottom: 20px; /* Puedes ajustar este valor según tus necesidades */
 }
 
 @media (min-width: 641px) {
