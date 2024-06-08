@@ -8,6 +8,8 @@ using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
+using ImaginaTuMundo.API.Data;
 
 
 namespace ImaginaTuMundo.API.Controllers
@@ -23,15 +25,30 @@ namespace ImaginaTuMundo.API.Controllers
         private readonly IFileStorage _fileStorage;
         private readonly IMailHelper _mailHelper;
         private readonly string _container;
+        private readonly DataContext _context;
 
 
-        public AccountsController(IUserHelper userHelper, IConfiguration configuration, IFileStorage fileStorage, IMailHelper mailHelper)
+        public AccountsController(IUserHelper userHelper, IConfiguration configuration, IFileStorage fileStorage, IMailHelper mailHelper, DataContext context)
         {
             _userHelper = userHelper;
             _configuration = configuration;
             _fileStorage = fileStorage;
             _container = "users";
+            _context = context;
             _mailHelper = mailHelper;
+        }
+
+
+        [HttpGet("all")]
+        public async Task<ActionResult> GetAll()
+        {
+            var queryable = _context.Users
+                .AsQueryable();
+
+            return Ok(await queryable
+                .OrderBy(x => x.Nombre)
+                .ThenBy(x => x.Apellido)
+                .ToListAsync());
         }
 
         [HttpPost("CreateUser")]
