@@ -13,6 +13,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
+builder.Services.AddApplicationInsightsTelemetry(); 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -48,6 +49,7 @@ builder.Services.AddSwaggerGen(c =>
           }
         });
 });
+
 
 
 builder.Services.AddIdentity<User, IdentityRole>(x =>
@@ -92,6 +94,13 @@ builder.Services.AddDbContext<DataContext>(x => x.UseSqlServer("name=DefaultConn
 
 var app = builder.Build();
 
+app.UseCors(policy =>
+{
+    policy.WithOrigins("https://localhost:8000") // Reemplaza esto con la URL de tu servidor frontend
+          .AllowAnyMethod()
+          .AllowAnyHeader();
+});
+
 SeedData(app);
 static void SeedData(WebApplication app)
 {
@@ -108,9 +117,11 @@ static void SeedData(WebApplication app)
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+
 }
+
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 

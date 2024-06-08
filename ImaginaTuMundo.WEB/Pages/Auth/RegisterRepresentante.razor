@@ -81,7 +81,13 @@
                             <ValidationMessage For="@(() => userDTO.PasswordConfirm)" />
                         </div>
                     </div>
-
+                    <div class="mb-3">
+                        <label>Foto:</label>
+                        <div>
+                            <InputText width="10" @bind-Value="@userDTO.Foto" />
+                            <ValidationMessage For="@(() => userDTO.Foto)" />
+                        </div>
+                    </div>
                     <div class="mb-3">
                         <InputImg Label="Foto" ImageSelected="ImageSelected" ImageURL="@imageUrl" />
                     </div>

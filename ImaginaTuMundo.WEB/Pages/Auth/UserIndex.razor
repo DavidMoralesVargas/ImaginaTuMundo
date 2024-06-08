@@ -1,0 +1,70 @@
+﻿@page "/users"
+@using System.Text.Json;
+@using ImaginaTuMundo.Shared.Entidades
+
+@inject IRepository Repository
+
+@if (Users == null)
+{
+    <div class="spinner-border" role="status">
+        <span class="sr-only">Loading...</span>
+    </div>
+}
+else
+{
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Imagén</th>
+                <th>Usuario</th>
+                <th>Documento</th>
+                <th>Teléfono</th>
+                <th>Email</th>
+                <th>Dirección</th>
+                <th>Confirmado</th>
+                <th>Tipo Usuario</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in Users)
+            {
+                <tr>
+                    <td><img src="@user.Foto" width="80" height="80" style="border-radius:50%" /></td>
+                    <td>@user.Nombre</td>
+                    <td>@user.Apellido</td>
+                    <td>@user.Documento</td>
+                    <td>@user.PhoneNumber</td>
+                    <td>@user.Email</td>
+                    <td>@user.Direccion</td>
+                    <td>@user.EmailConfirmed</td>
+                    <td>@user.UserType</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    public List<User> Users { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var response = await Repository.GetAsync<List<User>>("api/accounts/all");
+            if (!response.Error)
+            {
+                Users = response.Response;
+            }
+            else
+            {
+                // Manejar el error, mostrar mensaje al usuario, etc.
+            }
+        }
+        catch (Exception ex)
+        {
+            // Manejar el error, mostrar mensaje al usuario, etc.
+        }
+    }
+}
